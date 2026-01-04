@@ -27,7 +27,7 @@ class CategoriesController extends Controller
     public function create()
     {
         $category = new Category();
-        $parents = Category::all();
+        $parents = $this->categoryService->getAllParent();
         return view("dashboard.categories.create", compact("category", "parents"));
     }
 

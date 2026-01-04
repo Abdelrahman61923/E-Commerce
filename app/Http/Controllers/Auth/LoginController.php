@@ -44,7 +44,7 @@ class LoginController extends Controller
     protected function authenticated()
     {
         if (Auth::User()->type === User::TYPE_ADMIN) {
-            return redirect()->route('admin/dashboard');
+            return redirect()->route('admin.dashboard');
         } else {
             return redirect()->route('home');
         }

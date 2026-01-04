@@ -11,6 +11,12 @@ class CategoryService
     {
         return Category::with('parent')->latest()->paginate($perPage);
     }
+
+    public function getAllParent()
+    {
+        return Category::all();
+    }
+
     public function getAvailableParents(Category $category)
     {
         return Category::where('id', '!=', $category->id)
