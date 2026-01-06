@@ -1,4 +1,4 @@
-@props(['label' => '', 'name','option1' => 'Select option', 'options' => [], 'selected' => false,
+@props(['label' => '', 'name', 'option1' => '', 'options' => [], 'selected' => false,
 ])
 
 <div class="body-title mb-10">{{ $label }}<span class="tf-color-1">*</span></div>
@@ -9,7 +9,9 @@
         'is-invalid' => $errors->has($name),
     ]) }}>
 
-    <option value="">{{ $option1 }}</option>
+    @if ($option1)
+        <option value="">{{ $option1 }}</option>
+    @endif
 
     @foreach ($options as $value => $text)
         <option value="{{ $value }}" @selected(old($name, $selected) == $value)>

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Requests\Dashboard\BrandRequest;
 use App\Models\Brand;
-use Illuminate\Http\Request;
-use App\Services\BrandService;
 use App\Http\Controllers\Controller;
+use App\Services\Dashboard\BrandService;
+use App\Http\Requests\Dashboard\BrandRequest;
 
 class BrandController extends Controller
 {

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Requests\Dashboard\CategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
-use App\Services\CategoryService;
 use App\Http\Controllers\Controller;
+use App\Services\Dashboard\CategoryService;
+use App\Http\Requests\Dashboard\CategoryRequest;
 
 class CategoriesController extends Controller
 {

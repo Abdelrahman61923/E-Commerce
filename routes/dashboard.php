@@ -3,6 +3,7 @@
 use App\Http\Controllers\Dashboard\BrandController;
 use App\Http\Controllers\Dashboard\CategoriesController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\ProductController;
 use App\Models\User;
 
 
@@ -14,4 +15,5 @@ Route::middleware(['auth', 'auth.type:' . User::TYPE_ADMIN])
 
     Route::resource('/brands', BrandController::class);
     Route::resource('/categories', CategoriesController::class);
+    Route::resource('/products', ProductController::class);
 });

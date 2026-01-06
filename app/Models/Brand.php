@@ -16,6 +16,12 @@ class Brand extends Model
         return 'slug';
     }
 
+    // Relations
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
     // Global Scope
     protected static function booted()
     {
