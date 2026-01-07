@@ -48,7 +48,7 @@
                                     <td>{{ $category->id }}</td>
                                     <td class="pname">
                                         <div class="image">
-                                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}"
+                                            <img src="{{ $category->image_url }}" alt="{{ $category->name }}"
                                                 class="image">
                                         </div>
                                         <div class="name">
@@ -57,7 +57,7 @@
                                     </td>
                                     <td>{{ $category->slug }}</td>
                                     <td>{{ $category->parent->name ?? '-' }}</td>
-                                    <td><a href="#" target="_blank">0</a></td>
+                                    <td><a href="#">{{ $category->products_count }}</a></td>
                                     <td>
                                         <div class="list-icon-function">
                                             <a href="{{ route('admin.categories.edit', $category->slug) }}">

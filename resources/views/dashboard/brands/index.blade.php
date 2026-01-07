@@ -5,7 +5,9 @@
 @section('breadcrumb')
     @parent
     <li><i class="icon-chevron-right"></i></li>
-    <li><div class="text-tiny">Brands</div></li>
+    <li>
+        <div class="text-tiny">Brands</div>
+    </li>
 @endsection
 
 @section('content')
@@ -47,15 +49,15 @@
                                     <td>{{ $brand->id }}</td>
                                     <td class="pname">
                                         <div class="image">
-                                            <img src="{{ asset('storage/' . $brand->image) }}" alt="{{ $brand->name }}"
-                                                class="image">
+                                            <img src="{{ $brand->image_url }}" alt="{{ $brand->name }}" class="image">
                                         </div>
                                         <div class="name">
-                                            <a href="{{ route('admin.brands.show', $brand->slug) }}" class="body-title-2">{{ $brand->name }}</a>
+                                            <a href="{{ route('admin.brands.show', $brand->slug) }}"
+                                                class="body-title-2">{{ $brand->name }}</a>
                                         </div>
                                     </td>
                                     <td>{{ $brand->slug }}</td>
-                                    <td><a href="#" target="_blank">0</a></td>
+                                    <td><a href="#">{{ $brand->products_count }}</a></td>
                                     <td>
                                         <div class="list-icon-function">
                                             <a href="{{ route('admin.brands.edit', $brand->slug) }}">

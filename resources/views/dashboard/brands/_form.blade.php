@@ -17,22 +17,16 @@
     <div class="body-title">Upload images <span class="tf-color-1">*</span>
     </div>
     <div class="upload-image flex-grow">
-        @if ($brand->image)
-            <div class="item" id="imgpreview">
-                <img src="{{ asset('storage/'. $brand->image) }}" class="effect8" alt="{{ $brand->name }}">
-            </div>
-        @else
-            <div class="item" id="imgpreview" style="display: none">
-                <img src="upload-1.html" class="effect8" alt="">
-            </div>
-        @endif
+        <div class="item" id="imgpreview">
+            <img src="{{ $brand->image_url }}" class="effect8" alt="{{ $brand->name }}">
+        </div>
         <div id="upload-file" class="item up-load">
             <label class="uploadfile" for="myFile">
                 <span class="icon">
                     <i class="icon-upload-cloud"></i>
                 </span>
-                <span class="body-text">Drop your images here or select <span
-                        class="tf-color">click to browse</span></span>
+                <span class="body-text">Drop your images here or select <span class="tf-color">click to
+                        browse</span></span>
                 <x-form.input type="file" name="image" id="myFile" accept="image/*" />
             </label>
         </div>
@@ -49,7 +43,7 @@
             $('#myFile').on('change', function(e) {
                 const photoInp = $('#myFile');
                 const [file] = this.files;
-                if(file) {
+                if (file) {
                     $('#imgpreview img').attr('src', URL.createObjectURL(file));
                     $('#imgpreview').show();
                 }

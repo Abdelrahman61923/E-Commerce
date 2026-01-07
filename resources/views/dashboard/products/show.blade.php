@@ -42,16 +42,15 @@
                         <td>{{ $product->id }}</td>
                         <td class="pname">
                             <div class="image">
-                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                                    class="image">
+                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="image">
                             </div>
                             <div class="name">
                                 <div class="body-title-2">{{ $product->name }}</div>
                                 <div class="text-tiny mt-3">{{ $product->slug }}</div>
                             </div>
                         </td>
-                        <td>${{ $product->price }}</td>
-                        <td>${{ $product->sale_price }}</td>
+                        <td>{{ App\Helpers\Currency::format($product->price) }}</td>
+                        <td>{{ App\Helpers\Currency::format($product->sale_price) }}</td>
                         <td>{{ $product->SKU }}</td>
                         <td>{{ $product->category->name }}</td>
                         <td>{{ $product->brand->name }}</td>
@@ -60,9 +59,10 @@
                         <td>{{ $product->quantity }}</td>
                         <td colspan="2">
                             <div style="display: flex; gap: 6px;">
-                                @foreach ($product->images as $img)
+                                @foreach ($product->all_images as $img)
                                     <div class="image">
-                                        <img src="{{ asset('storage/' . $img) }}" alt="" class="image" style="width:50px; height:50px; object-fit:cover;">
+                                        <img src="{{ $img }}" alt="" class="image"
+                                            style="width:50px; height:50px; object-fit:cover;">
                                     </div>
                                 @endforeach
                             </div>

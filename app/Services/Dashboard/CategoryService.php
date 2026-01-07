@@ -9,7 +9,8 @@ class CategoryService
 {
     public function getAll($perPage = 10)
     {
-        return Category::with('parent')->latest()->paginate($perPage);
+        return Category::with('parent')->withCount('products')
+            ->latest()->paginate($perPage);
     }
 
     public function getAllParent()
@@ -29,35 +30,25 @@ class CategoryService
 
     public function add(array $data)
     {
-        if(isset($data['image'])) {
-            $data['image'] = $this->uploadImage($data['image']);
-        };
-        return Category::create($data);
+        $category = Category::create($data);
+        if (!empty($data['image'])) {
+            $category->addMedia($data['image'])->toMediaCollection('main');
+        }
+        return $category;
     }
 
     public function update(Category $category, array $data)
     {
-        if(isset($data['image'])) {
-            if($category->image) {
-                Storage::disk('public')->delete($category->image);
-            }
-            $data['image'] = $this->uploadImage($data['image']);
+        $category->update($data);
+        if (!empty($data['image'])) {
+            $category->clearMediaCollection('main');
+            $category->addMedia($data['image'])->toMediaCollection('main');
         }
-        return $category->update($data);
+        return $category;
     }
 
     public function delete(Category $category)
     {
-        if($category->image){
-            Storage::disk('public')->delete($category->image);
-        }
         return $category->delete();
-    }
-
-    protected function uploadImage($imageFile)
-    {
-        return $imageFile->store('uploads/categories', [
-            'disk' => 'public',
-        ]);
     }
 }

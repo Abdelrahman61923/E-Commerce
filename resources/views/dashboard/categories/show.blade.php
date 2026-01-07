@@ -37,7 +37,7 @@
                             <td>{{ $category->id }}</td>
                             <td class="pname">
                                 <div class="image">
-                                    <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}"
+                                    <img src="{{ $category->image_url }}" alt="{{ $category->name }}"
                                         class="image">
                                 </div>
                                 <div class="name">

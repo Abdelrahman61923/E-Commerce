@@ -13,22 +13,17 @@
     <x-form.input label="Category Name" name="name" placeholder="Category name" :value="$category->name" />
 </fieldset>
 <fieldset class="name">
-    <x-form.select label="Category parent" option1="primary Category" name="parent_id" :options="$parents->pluck('name', 'id')" :selected="$category->parent_id ?? ''" />
+    <x-form.select label="Category parent" option1="primary Category" name="parent_id" :options="$parents->pluck('name', 'id')"
+        :selected="$category->parent_id ?? ''" />
 </fieldset>
 
 <fieldset>
     <div class="body-title">Upload images <span class="tf-color-1">*</span>
     </div>
     <div class="upload-image flex-grow">
-        @if ($category->image)
-            <div class="item" id="imgpreview">
-                <img src="{{ asset('storage/' . $category->image) }}" class="effect8" alt="{{ $category->name }}">
-            </div>
-        @else
-            <div class="item" id="imgpreview" style="display: none">
-                <img src="upload-1.html" class="effect8" alt="">
-            </div>
-        @endif
+        <div class="item" id="imgpreview">
+            <img src="{{ $category->image_url }}" class="effect8" alt="{{ $category->name }}">
+        </div>
         <div id="upload-file" class="item up-load">
             <label class="uploadfile" for="myFile">
                 <span class="icon">

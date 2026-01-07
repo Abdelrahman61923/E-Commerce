@@ -9,40 +9,30 @@ class BrandService
 {
     public function getAll($perPage = 10)
     {
-        return Brand::latest()->paginate($perPage);
+        return Brand::withCount('products')->latest()->paginate($perPage);
     }
 
     public function add(array $data)
     {
-        if (isset($data['image'])) {
-            $data['image'] = $this->uploadImage($data['image']);
+        $brand = Brand::create($data);
+        if (!empty($data['image'])) {
+            $brand->addMedia($data['image'])->toMediaCollection('main');
         }
-        return Brand::create($data);
+        return $brand;
     }
 
     public function update(Brand $brand, array $data)
     {
-        if (isset($data['image'])) {
-            if ($brand->image) {
-                Storage::disk('public')->delete($brand->image);
-            }
-            $data['image'] = $this->uploadImage($data['image']);
+        $brand->update($data);
+        if (!empty($data['image'])) {
+            $brand->clearMediaCollection('main');
+            $brand->addMedia($data['image'])->toMediaCollection('main');
         }
-        return $brand->update($data);
+        return $brand;
     }
 
     public function delete(Brand $brand)
     {
-        if ($brand->image) {
-            Storage::disk('public')->delete($brand->image);
-        }
         return $brand->delete();
-    }
-
-    protected function uploadImage($imageFile)
-    {
-        return $imageFile->store('uploads/brands', [
-            'disk' => 'public',
-        ]);
     }
 }

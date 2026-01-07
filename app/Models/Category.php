@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Category extends Model
+class Category extends Model implements HasMedia
 {
+    use InteractsWithMedia;
     protected $fillable = [
-        'name', 'slug', 'image', 'parent_id'
+        'name', 'slug', 'parent_id'
     ];
 
     public function getRouteKeyName()
@@ -39,5 +42,12 @@ class Category extends Model
         static::updating(function ($category) {
             $category->slug = Str::slug($category->name);
         });
+    }
+
+    // Accessors
+    public function getImageUrlAttribute()
+    {
+        return $this->getFirstMediaUrl('main')
+            ?: asset('assets/images/no_product.png');
     }
 }

@@ -55,15 +55,15 @@
                                 <td>{{ $product->id }}</td>
                                 <td class="pname">
                                     <div class="image">
-                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="image">
+                                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="image">
                                     </div>
                                     <div class="name">
                                         <a href="{{ route('admin.products.show', $product->slug) }}" class="body-title-2">{{ $product->name }}</a>
                                         <div class="text-tiny mt-3">{{ $product->slug }}</div>
                                     </div>
                                 </td>
-                                <td>${{ $product->price }}</td>
-                                <td>${{ $product->sale_price }}</td>
+                                <td>{{ App\Helpers\Currency::format($product->price) }}</td>
+                                <td>{{ App\Helpers\Currency::format($product->sale_price) }}</td>
                                 <td>{{ $product->SKU }}</td>
                                 <td>{{ $product->category->name }}</td>
                                 <td>{{ $product->brand->name }}</td>

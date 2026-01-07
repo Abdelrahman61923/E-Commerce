@@ -411,16 +411,10 @@
                                     <div class="swiper-container background-img js-swiper-slider"
                                         data-settings='{"resizeObserver": true}'>
                                         <div class="swiper-wrapper">
-                                            <div class="swiper-slide">
-                                                <a href="{{ route('shop.show', $product->slug) }}"><img loading="lazy"
-                                                        src="{{ asset('storage/' . $product->image) }}" width="330"
-                                                        height="400" alt="{{ $product->name }}"
-                                                        class="pc__img"></a>
-                                            </div>
-                                            @foreach ($product->images as $img)
+                                            @foreach ($product->all_images as $img)
                                                 <div class="swiper-slide">
                                                     <a href="{{ route('shop.show', $product->slug) }}"><img
-                                                            loading="lazy" src="{{ asset('storage/' . $img) }}"
+                                                            loading="lazy" src="{{ $img }}"
                                                             width="330" height="400" alt="{{ $product->name }}"
                                                             class="pc__img"></a>
                                                 </div>
@@ -447,10 +441,11 @@
                                     </h6>
                                     <div class="product-card__price d-flex">
                                         @if ($product->sale_price)
-                                            <span class="money price price-old">${{ $product->price }}</span>
-                                            <span class="money price price-sale">${{ $product->sale_price }}</span>
+
+                                            <span class="money price price-old">{{ App\Helpers\Currency::format($product->price) }}</span>
+                                            <span class="money price price-sale">{{ App\Helpers\Currency::format($product->sale_price) }}</span>
                                         @else
-                                            <span class="money price">${{ $product->price }}</span>
+                                            <span class="money price">{{ App\Helpers\Currency::format($product->price) }}</span>
                                         @endif
                                     </div>
                                     <div class="product-card__review d-flex align-items-center">

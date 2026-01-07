@@ -8,23 +8,11 @@
                         <div class="product-single__image">
                             <div class="swiper-container">
                                 <div class="swiper-wrapper">
-                                    <div class="swiper-slide product-single__image-item">
-                                        <img loading="lazy" class="h-auto"
-                                            src="{{ asset('storage/' . $product->image) }}" width="674"
-                                            height="674" alt="" />
-                                        <a data-fancybox="gallery" href="{{ asset('storage/' . $product->image) }}"
-                                            data-bs-toggle="tooltip" data-bs-placement="left" title="Zoom">
-                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_zoom" />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                    @foreach ($product->images as $img)
+                                    @foreach ($product->all_images as $img)
                                         <div class="swiper-slide product-single__image-item">
-                                            <img loading="lazy" class="h-auto" src="{{ asset('storage/' . $img) }}"
+                                            <img loading="lazy" class="h-auto" src="{{ $img }}"
                                                 width="674" height="674" alt="" />
-                                            <a data-fancybox="gallery" href="../images/products/product_0.html"
+                                            <a data-fancybox="gallery" href="{{ $product->name }}"
                                                 data-bs-toggle="tooltip" data-bs-placement="left" title="Zoom">
                                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -33,7 +21,6 @@
                                             </a>
                                         </div>
                                     @endforeach
-
                                 </div>
                                 <div class="swiper-button-prev"><svg width="7" height="11" viewBox="0 0 7 11"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -48,12 +35,9 @@
                         <div class="product-single__thumbnail">
                             <div class="swiper-container">
                                 <div class="swiper-wrapper">
-                                    <div class="swiper-slide product-single__image-item"><img loading="lazy"
-                                            class="h-auto" src="{{ asset('storage/' . $product->image) }}"
-                                            width="104" height="104" alt="" /></div>
-                                    @foreach ($product->images as $img)
+                                    @foreach ($product->all_images as $img)
                                         <div class="swiper-slide product-single__image-item"><img loading="lazy"
-                                                class="h-auto" src="{{ asset('storage/' . $img) }}" width="104"
+                                                class="h-auto" src="{{ $img }}" width="104"
                                                 height="104" alt="" /></div>
                                     @endforeach
                                 </div>
@@ -108,10 +92,10 @@
 
                     <div class="product-card__price d-flex">
                         @if ($product->sale_price)
-                            <span class="money price price-old">${{ $product->price }}</span>
-                            <span class="money price price-sale">${{ $product->sale_price }}</span>
+                            <span class="money price price-old">{{ App\Helpers\Currency::format($product->price) }}</span>
+                            <span class="money price price-sale">{{ App\Helpers\Currency::format($product->sale_price) }}</span>
                         @else
-                            <span class="money price">${{ $product->price }}</span>
+                            <span class="money price">{{ App\Helpers\Currency::format($product->price) }}</span>
                         @endif
                     </div>
                     <div class="product-single__short-desc">
@@ -426,12 +410,14 @@
                             <div class="swiper-slide product-card">
                                 <div class="pc__img-wrapper">
                                     <a href="{{ route('shop.show', $rproduct->slug) }}">
-                                        <img loading="lazy" src="{{ asset('storage/' . $rproduct->image) }}"
+                                        <img loading="lazy" src="{{ $rproduct->image_url }}"
                                             width="330" height="400" alt="{{ $rproduct->name }}"
                                             class="pc__img">
-                                        <img loading="lazy" src="{{ asset('storage/' . $rproduct->images[0]) }}"
-                                            width="330" height="400" alt="{{ $rproduct->name }}"
-                                            class="pc__img pc__img-second">
+                                        @foreach ($rproduct->images_urls as $img)
+                                            <img loading="lazy" src="{{ $img }}"
+                                                width="330" height="400" alt="{{ $rproduct->name }}"
+                                                class="pc__img pc__img-second">
+                                        @endforeach
                                     </a>
                                     <button
                                         class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
@@ -445,10 +431,10 @@
                                     </h6>
                                     <div class="product-card__price d-flex">
                                         @if ($rproduct->sale_price)
-                                            <span class="money price price-old">${{ $rproduct->price }}</span>
-                                            <span class="money price price-sale">${{ $rproduct->sale_price }}</span>
+                                            <span class="money price price-old">{{ App\Helpers\Currency::format($product->price) }}</span>
+                                            <span class="money price price-sale">{{ App\Helpers\Currency::format($product->sale_price) }}</span>
                                         @else
-                                            <span class="money price">${{ $rproduct->price }}</span>
+                                            <span class="money price">{{ App\Helpers\Currency::format($product->price) }}</span>
                                         @endif
                                     </div>
 
