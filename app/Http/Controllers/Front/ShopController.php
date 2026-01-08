@@ -12,10 +12,10 @@ class ShopController extends Controller
     public function __construct(protected ShopService $shopService)
     {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = $this->shopService->getAllProducts(9);
-        return view("front.shop.index", compact("products"));
+        $data = $this->shopService->getProducts($request);
+        return view('front.shop.index', $data);
     }
 
     public function show(Product $product)
