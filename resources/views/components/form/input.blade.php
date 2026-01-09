@@ -9,7 +9,11 @@
 @endif
 
 <input type="{{ $type }}" name="{{ $name }}" value="{{ old($name, $value) }}"
-    {{ $attributes->class(['flex-grow', 'is-invalid' => $errors->has($name)]) }}>
+    {{ $attributes->class([
+        'flex-grow',
+        'is-invalid' => $errors->has($name)
+        ])
+    }}>
 
 
 @error($name)

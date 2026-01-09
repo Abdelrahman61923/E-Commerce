@@ -88,19 +88,4 @@
             </div>
         </section>
     </main>
-    @push('scripts')
-        <script>
-            $(function() {
-                $('.qty-control__increase').on('click', function() {
-                    $(this).closest('form').submit();
-                })
-                $('.qty-control__reduce').on('click', function() {
-                    $(this).closest('form').submit();
-                })
-                $('.remove-cart').on('click', function() {
-                    $(this).closest('form').submit();
-                })
-            })
-        </script>
-    @endpush
 </x-front-layout>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Front\CartController;
+use App\Http\Controllers\Front\CheckoutController;
 use App\Http\Controllers\Front\ShopController;
 use App\Http\Controllers\Front\WishlistController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,8 @@ Route::controller(CartController::class)
         Route::put('/decrease-quantity/{rowId}','decrease_cart_quantity')->name('qty.decrease');
         Route::delete('/remove/{rowId}','remove_item')->name('item.remove');
         Route::delete('/clear','empty_cart')->name('empty');
+        Route::post('/apply-coupon','apply_coupon_code')->name('coupon.apply');
+        Route::delete('/remove-coupon','remove_coupon_code')->name('coupon.remove');
 });
 
 Route::controller(WishlistController::class)
@@ -36,6 +39,13 @@ Route::controller(WishlistController::class)
         Route::delete('/remove/{rowId}','remove_item')->name('item.remove');
         Route::delete('/clear','empty_wishlist')->name('empty');
         Route::post('/move-to-cart/{rowId}','move_to_cart')->name('move.to.cart');
+});
+
+Route::controller(CheckoutController::class)
+    ->name('order.')->group(function () {
+        Route::get('/checkout','checkout')->name('checkout');
+        Route::post('/order/place','place_an_order')->name('place');
+        Route::get('/order/confirmation/{order}','order_confirmation')->name('confirmation');
 });
 
 require __DIR__.'/dashboard.php';
