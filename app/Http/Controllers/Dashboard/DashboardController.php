@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Services\Dashboard\DashboardService;
+use App\Models\Product;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\Dashboard\DashboardService;
 
 class DashboardController extends Controller
 {
@@ -36,5 +38,12 @@ class DashboardController extends Controller
             'charts' => $charts,
             'totals' => $totals,
         ]);
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $requests = Product::where('name', 'LIKE', "%{$query}%")->take(8)->get();
+        return response()->json($requests);
     }
 }

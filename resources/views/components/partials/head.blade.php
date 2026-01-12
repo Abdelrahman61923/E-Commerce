@@ -20,6 +20,20 @@
         .filled-heart {
             color: orange;
         }
+        .product-item {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 15px;
+            transition: all 0.3s ease;
+            padding-right: 5px;
+        }
+        #box-content-search li {
+            list-style: none;
+        }
+        #box-content-search .product-item {
+            margin-bottom: 10px;
+        }
     </style>
     @stack('styles')
 </head>

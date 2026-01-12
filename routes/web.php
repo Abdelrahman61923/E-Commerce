@@ -13,6 +13,10 @@ Auth::routes();
 
 Route::controller(HomeController::class)->group(function () {
     Route::get('/','index')->name('home');
+    Route::get('/about-us','about')->name('about.index');
+    Route::get('/contact-us','contact')->name('contact.index');
+    Route::post('/contact-us/store','store')->name('contact.store');
+    Route::get('/search','search')->name('home.search');
 });
 
 Route::controller(ShopController::class)->group(function () {
