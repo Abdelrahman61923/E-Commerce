@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Enums\ContactStatus;
+use Illuminate\Validation\Rule;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -55,7 +57,7 @@ class ContactController extends Controller
     public function update(Request $request, Contact $contact)
     {
         $request->validate([
-            'status' => ['required', 'in:new,read,replied'],
+            'status' => ['required', Rule::enum(ContactStatus::class)],
         ]);
         $contact->update([
             'status'=> $request->status

@@ -5,7 +5,7 @@
 @section('breadcrumb')
     @parent
     <li><i class="icon-chevron-right"></i></li>
-    <li><a href="{{ route('admin.products.index') }}"><div class="text-tiny">Categories</div></a></li>
+    <li><a href="{{ route('admin.products.index') }}"><div class="text-tiny">Products</div></a></li>
     <li><i class="icon-chevron-right"></i></li>
     <li><div class="text-tiny">Edit Product</div></li>
 @endsection

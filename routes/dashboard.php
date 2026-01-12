@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserType;
 use App\Http\Controllers\Dashboard\BrandController;
 use App\Http\Controllers\Dashboard\CategoriesController;
 use App\Http\Controllers\Dashboard\ContactController;
@@ -8,10 +9,8 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\OrderController;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\SlideController;
-use App\Models\User;
 
-
-Route::middleware(['auth', 'auth.type:' . User::TYPE_ADMIN])
+Route::middleware(['auth', 'auth.type:' . UserType::ADMIN->value])
     ->prefix('admin')->name('admin.')->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/dashboard','index')->name('dashboard');

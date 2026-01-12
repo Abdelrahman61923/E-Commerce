@@ -52,9 +52,9 @@
                                     <td>{{ $contact->email }}</td>
                                     <td>{{ $contact->comment }}</td>
                                     <td>
-                                        @if ($contact->status == 'new')
+                                        @if ($contact->status === \App\Enums\ContactStatus::NEW)
                                             <span class="badge bg-warning fs-5">New</span>
-                                        @elseif ($contact->status == 'read')
+                                        @elseif ($contact->status == \App\Enums\ContactStatus::READ)
                                             <span class="badge bg-info fs-5">Read</span>
                                         @else
                                             <span class="badge bg-success fs-5">Replied</span>
@@ -81,7 +81,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="6" class="text-muted text-center">No Contacts defined.</td>
+                                <td colspan="8" class="text-muted text-center">No Messages defined.</td>
                             </tr>
                         @endif
                     </tbody>

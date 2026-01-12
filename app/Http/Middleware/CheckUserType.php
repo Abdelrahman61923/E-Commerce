@@ -19,7 +19,7 @@ class CheckUserType
         if (!$user) {
             return redirect()->route('login');
         }
-        if (!in_array($user->type, $types)) {
+        if (!in_array($user->type->value, $types)) {
             abort(403);
         }
         return $next($request);

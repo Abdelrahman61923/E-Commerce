@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\UserType;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -43,7 +44,7 @@ class LoginController extends Controller
 
     protected function authenticated()
     {
-        if (Auth::User()->type === User::TYPE_ADMIN) {
+        if (Auth::User()->type === UserType::ADMIN) {
             return redirect()->route('admin.dashboard');
         } else {
             return redirect()->route('home');

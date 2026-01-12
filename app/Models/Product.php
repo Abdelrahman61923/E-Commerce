@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\ProductStockStatus;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -14,6 +14,7 @@ class Product extends Model
     ];
     protected $casts = [
         'images' => 'array',
+        'stock_status' => ProductStockStatus::class,
     ];
 
     public function getRouteKeyName()

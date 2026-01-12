@@ -434,7 +434,7 @@
                     </div>
                 @else
                     <div class="header-tools__item hover-container">
-                        <a href="{{ Auth::user()->type == \App\Models\User::TYPE_ADMIN ? route('admin.dashboard') : route('user.index') }}"
+                        <a href="{{ Auth::user()->type == \App\Enums\UserType::ADMIN ? route('admin.dashboard') : route('user.index') }}"
                             class="header-tools__item">
                             <span class="small fw-semibold pe-2">{{ Auth::user()->name }}</span>
                             <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
