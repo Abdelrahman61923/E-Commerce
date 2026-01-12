@@ -412,12 +412,12 @@
                                     <div class="product-card__price d-flex">
                                         @if ($product->sale_price)
                                             <span
-                                                class="money price price-old">{{ App\Helpers\Currency::format($product->price) }}</span>
+                                                class="money price price-old">{{ Currency::format($product->price) }}</span>
                                             <span
-                                                class="money price price-sale">{{ App\Helpers\Currency::format($product->sale_price) }}</span>
+                                                class="money price price-sale">{{ Currency::format($product->sale_price) }}</span>
                                         @else
                                             <span
-                                                class="money price">{{ App\Helpers\Currency::format($product->price) }}</span>
+                                                class="money price">{{ Currency::format($product->price) }}</span>
                                         @endif
                                     </div>
                                     <div class="product-card__review d-flex align-items-center">
@@ -448,7 +448,7 @@
                                     </div>
 
 
-                                    @if (Surfsidemedia\Shoppingcart\Facades\Cart::instance('wishlist')->content()->where('id', $product->id)->count())
+                                    @if (Cart::instance('wishlist')->content()->where('id', $product->id)->count())
                                         <form action="{{ route('wishlist.item.remove', ['rowId' => Surfsidemedia\Shoppingcart\Facades\Cart::instance('wishlist')->content()->where('id', $product->id)->first()->rowId]) }}" method="post">
                                             @csrf
                                             @method('delete')

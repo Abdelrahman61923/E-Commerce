@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -11,6 +12,15 @@ class Order extends Model
         'address','city','state','country','landmark','zip','type','status','is_shipping_different',
         'delivered_date','canceled_date',
     ];
+
+    const STATUS_DELIVERED = 'delivered';
+    const STATUS_ORDERED = 'ordered';
+    const STATUS_CANCELED = 'canceled';
+
+    public static function statuses()
+    {
+        return self::getConstantsWithPrefix('STATUS_');
+    }
 
     // Relations
     public function user()
@@ -25,5 +35,11 @@ class Order extends Model
     public function transaction()
     {
         return $this->hasOne(Transaction::class);
+    }
+
+    // Local Scope
+    public function scopeStatus(Builder $builder, $status)
+    {
+        $builder->where('status', '=', $status);
     }
 }

@@ -126,7 +126,7 @@
                         </form>
                     @endif
                     <div class="product-single__addtolinks">
-                        @if (Surfsidemedia\Shoppingcart\Facades\Cart::instance('wishlist')->content()->where('id', $product->id)->count())
+                        @if (Cart::instance('wishlist')->content()->where('id', $product->id)->count())
                             <form
                                 action="{{ route('wishlist.item.remove', ['rowId' => Surfsidemedia\Shoppingcart\Facades\Cart::instance('wishlist')->content()->where('id', $product->id)->first()->rowId]) }}"
                                 method="post" id="wishlist-item-remove">
@@ -455,7 +455,7 @@
                                                 class="pc__img pc__img-second">
                                         @endforeach
                                     </a>
-                                    @if (Surfsidemedia\Shoppingcart\Facades\Cart::instance('cart')->content()->where('id', $rproduct->id)->count() > 0)
+                                    @if (Cart::instance('cart')->content()->where('id', $rproduct->id)->count() > 0)
                                         <a href="{{ route('cart.index') }}"
                                             class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium btn-warning mb-3">Go
                                             to cart</a>
@@ -482,12 +482,12 @@
                                     <div class="product-card__price d-flex">
                                         @if ($rproduct->sale_price)
                                             <span
-                                                class="money price price-old">{{ App\Helpers\Currency::format($product->price) }}</span>
+                                                class="money price price-old">{{ Currency::format($rproduct->price) }}</span>
                                             <span
-                                                class="money price price-sale">{{ App\Helpers\Currency::format($product->sale_price) }}</span>
+                                                class="money price price-sale">{{ Currency::format($rproduct->sale_price) }}</span>
                                         @else
                                             <span
-                                                class="money price">{{ App\Helpers\Currency::format($product->price) }}</span>
+                                                class="money price">{{ Currency::format($rproduct->price) }}</span>
                                         @endif
                                     </div>
 

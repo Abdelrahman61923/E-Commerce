@@ -19,9 +19,50 @@
     <div class="wg-box">
         <div class="flex items-center justify-between gap10 flex-wrap">
             <div class="wg-filter flex-grow">
-                <h5>Ordered Items</h5>
+                <h5>Ordered Details</h5>
             </div>
             <a class="tf-button style-1 w208" href="{{ route('admin.orders.index') }}">Back</a>
+        </div>
+        <div class="table-responsive">
+            <x-alert type="success" />
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th>Order No</th>
+                    <td>{{ $order->id }}</td>
+                    <th>Mobile</th>
+                    <td>{{ $order->phone }}</td>
+                    <th>Zip Code</th>
+                    <td>{{ $order->zip }}</td>
+                </tr>
+                <tr>
+                    <th>Order Date</th>
+                    <td>{{ $order->created_at }}</td>
+                    <th>Delivered Date</th>
+                    <td>{{ $order->delivered_date }}</td>
+                    <th>Canceled Date</th>
+                    <td>{{ $order->canceled_date }}</td>
+                </tr>
+                <tr>
+                    <th>Order Status</th>
+                    <td colspan="5">
+                        @if ($order->status == 'delivered')
+                            <span class="badge bg-success fs-4">Delivered</span>
+                        @elseif ($order->status == 'canceled')
+                            <span class="badge bg-danger fs-4">Canceled</span>
+                        @else
+                            <span class="badge bg-warning fs-4">Ordered</span>
+                        @endif
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="divider"></div>
+    </div>
+    <div class="wg-box mt-5">
+        <div class="flex items-center justify-between gap10 flex-wrap">
+            <div class="wg-filter flex-grow">
+                <h5>Ordered Items</h5>
+            </div>
         </div>
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
@@ -43,10 +84,12 @@
                         <tr>
                             <td class="pname">
                                 <div class="image">
-                                    <img src="{{ asset('storage/' . $item->product->image) }}" alt="" class="image">
+                                    <img src="{{ asset('storage/' . $item->product->image) }}" alt=""
+                                        class="image">
                                 </div>
                                 <div class="name">
-                                    <a href="#" target="_blank" class="body-title-2">{{ $item->product->name }}</a>
+                                    <a href="{{ route('shop.show', $item->product->slug) }}" target="_blank"
+                                        class="body-title-2">{{ $item->product->name }}</a>
                                 </div>
                             </td>
                             <td class="text-center">{{ Currency::format($item->price) }}</td>
@@ -54,8 +97,8 @@
                             <td class="text-center">{{ $item->product->SKU }}</td>
                             <td class="text-center">{{ $item->product->category->name }}</td>
                             <td class="text-center">{{ $item->product->brand->name }}</td>
-                            <td class="text-center"></td>
-                            <td class="text-center">No</td>
+                            <td class="text-center">{{ $item->options }}</td>
+                            <td class="text-center">{{ $item->rstatus ? 'Yes' : 'No' }}</td>
                             <td class="text-center">
                                 <div class="list-icon-function view-icon">
                                     <div class="item eye">
@@ -69,7 +112,6 @@
                 </tbody>
             </table>
         </div>
-
         <div class="divider"></div>
         <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination">
 
@@ -80,14 +122,14 @@
         <h5>Shipping Address</h5>
         <div class="my-account__address-item col-md-6">
             <div class="my-account__address-item__detail">
-                <p>{{ $order->user->defaultAddress->name }}</p>
-                <p>Flat No - 13, R. K. Wing - B</p>
-                <p>ABC, DEF</p>
-                <p>GHT, </p>
-                <p>AAA</p>
-                <p>000000</p>
+                <p>{{ $order->name }}</p>
+                <p>{{ $order->address }}</p>
+                <p>{{ $order->locality }}</p>
+                <p>{{ $order->city }}</p>
+                <p>{{ $order->landmark }}</p>
+                <p>{{ $order->zip }}</p>
                 <br>
-                <p>Mobile : {{ $order->user->defaultAddress->phone }}</p>
+                <p>Mobile : {{ $order->phone }}</p>
             </div>
         </div>
     </div>
@@ -102,7 +144,7 @@
                     <th>Tax</th>
                     <td>{{ Currency::format($order->tax) }}</td>
                     <th>Discount</th>
-                    <td>{{ Currency::format($order->dicount) }}</td>
+                    <td>{{ Currency::format($order->discount) }}</td>
                 </tr>
                 <tr>
                     <th>Total</th>
@@ -110,17 +152,36 @@
                     <th>Payment Mode</th>
                     <td>{{ $order->transaction->mode }}</td>
                     <th>Status</th>
-                    <td>{{ $order->transaction->status }}</td>
-                </tr>
-                <tr>
-                    <th>Order Date</th>
-                    <td>{{ $order->created_at }}</td>
-                    <th>Delivered Date</th>
-                    <td></td>
-                    <th>Canceled Date</th>
-                    <td></td>
+                    <td>
+                        @if ($order->transaction->status == 'approved')
+                            <span class="badge bg-success fs-4">Approved</span>
+                        @elseif ($order->transaction->status == 'declinded')
+                            <span class="badge bg-danger fs-4">Declinded</span>
+                        @elseif ($order->transaction->status == 'refunded')
+                            <span class="badge bg-secondary fs-4">Refunded</span>
+                        @else
+                            <span class="badge bg-warning fs-4">Pending</span>
+                        @endif
+                    </td>
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="wg-box mt-5">
+        <h5>Update Order Status</h5>
+        <form action="{{ route('admin.orders.update', $order->id) }}" method="post">
+            @csrf
+            @method('PUT')
+            <div class="row">
+                <div class="col-md-3">
+                    <x-form.select name="status" :options="['ordered' => 'Ordered', 'delivered' => 'Delivered', 'canceled' => 'Canceled']"
+                        :selected="$order->status ?? ''" />
+                </div>
+                <div class="col-md 3">
+                    <button type="submit" class="btn btn-primary tf-button w208">Update Status</button>
+                </div>
+            </div>
+        </form>
     </div>
 @endsection

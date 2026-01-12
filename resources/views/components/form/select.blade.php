@@ -1,7 +1,9 @@
 @props(['label' => '', 'name', 'option1' => '', 'options' => [], 'selected' => false,
 ])
 
-<div class="body-title mb-10">{{ $label }}<span class="tf-color-1">*</span></div>
+@if ($label)
+    <div class="body-title mb-10">{{ $label }}<span class="tf-color-1">*</span></div>
+@endif
 
 <select name="{{ $name }}" id="{{ $name }}"
     {{ $attributes->class([

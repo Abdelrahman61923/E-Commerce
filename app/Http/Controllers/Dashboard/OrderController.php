@@ -21,9 +21,37 @@ class OrderController extends Controller
     {
         $order->load('orderItems.product.category',
             'orderItems.product.brand',
-            'user.defaultAddress',
             'transaction'
         );
         return view('dashboard.orders.order-details', compact('order'));
     }
+
+    public function update_order_status(Request $request, Order $order)
+    {
+        $request->validate([
+            'status' => ['required', 'in:ordered,delivered,canceled'],
+        ]);
+
+        $data = [
+            'status' => $request->status,
+            'delivered_date' => null,
+            'canceled_date' => null,
+        ];
+
+        if ($request->status == 'delivered') {
+            $data['delivered_date'] = now();
+        }
+        elseif ($request->status == 'canceled') {
+            $data['canceled_date'] = now();
+        }
+        $order->update($data);
+
+        if ($request->status == 'delivered' && $order->transaction) {
+            $order->transaction->update([
+                'status' => 'approved',
+            ]);
+        }
+        return back()->with('success','Status Changed Successfully!');
+    }
+
 }

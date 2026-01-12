@@ -450,7 +450,7 @@
                     </div>
                 @else
                     <div class="header-tools__item hover-container">
-                        <a href="{{ Auth::user()->type == \App\Models\User::TYPE_ADMIN ? route('admin.dashboard') : route('account') }}"
+                        <a href="{{ Auth::user()->type == \App\Models\User::TYPE_ADMIN ? route('admin.dashboard') : route('user.index') }}"
                             class="header-tools__item">
                             <span class="small fw-semibold pe-2">{{ Auth::user()->name }}</span>
                             <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
@@ -466,8 +466,8 @@
                         xmlns="http://www.w3.org/2000/svg">
                         <use href="#icon_heart" />
                     </svg>
-                    @if (Surfsidemedia\Shoppingcart\Facades\Cart::instance('wishlist')->content()->count())
-                        <span class="cart-amount d-block position-absolute js-cart-items-count">{{ Surfsidemedia\Shoppingcart\Facades\Cart::instance('wishlist')->content()->count() }}</span>
+                    @if (Cart::instance('wishlist')->content()->count())
+                        <span class="cart-amount d-block position-absolute js-cart-items-count">{{ Cart::instance('wishlist')->content()->count() }}</span>
                     @endif
                 </a>
 

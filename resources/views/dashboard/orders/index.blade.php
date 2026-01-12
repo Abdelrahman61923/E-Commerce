@@ -54,10 +54,18 @@
                                 <td class="text-center">{{ Currency::format($order->subtotal) }}</td>
                                 <td class="text-center">{{ Currency::format($order->tax) }}</td>
                                 <td class="text-center">{{ Currency::format($order->total) }}</td>
-                                <td class="text-center">{{ $order->status }}</td>
+                                <td class="text-center">
+                                    @if ($order->status == 'delivered')
+                                        <span class="badge bg-success fs-5">Delivered</span>
+                                    @elseif ($order->status == 'canceled')
+                                        <span class="badge bg-danger fs-5">Canceled</span>
+                                    @else
+                                        <span class="badge bg-warning fs-5">Ordered</span>
+                                    @endif
+                                </td>
                                 <td class="text-center">{{ $order->created_at }}</td>
-                                <td class="text-center">{{ $order->order_items_count  }}</td>
-                                <td></td>
+                                <td class="text-center">{{ $order->order_items_count }}</td>
+                                <td class="text-center">{{ $order->delivered_date }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('admin.orders.show', $order->id) }}">
                                         <div class="list-icon-function view-icon">
@@ -71,7 +79,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="6" class="text-muted text-center">No Orders defined.</td>
+                                <td colspan="11" class="text-muted text-center">No Orders defined.</td>
                             </tr>
                         @endif
                     </tbody>

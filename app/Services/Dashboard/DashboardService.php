@@ -1,0 +1,68 @@
+<?php
+
+namespace App\Services\Dashboard;
+
+use Carbon\Carbon;
+use App\Models\Order;
+use Illuminate\Support\Facades\DB;
+
+class DashboardService
+{
+    public function getAll()
+    {
+        return Order::withCount('orderItems')->latest()->take(10)->get();
+    }
+    public function getDashboardStats()
+    {
+        return Order::selectRaw('
+            COUNT(*) as total_orders,
+            SUM(total) as total_amount,
+            SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as delivered_orders,
+            SUM(CASE WHEN status = ? THEN total ELSE 0 END) as delivered_amount,
+            SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as pending_orders,
+            SUM(CASE WHEN status = ? THEN total ELSE 0 END) as pending_amount,
+            SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as canceled_orders,
+            SUM(CASE WHEN status = ? THEN total ELSE 0 END) as canceled_amount
+        ', [
+            Order::STATUS_DELIVERED,
+            Order::STATUS_DELIVERED,
+            Order::STATUS_ORDERED,
+            Order::STATUS_ORDERED,
+            Order::STATUS_CANCELED,
+            Order::STATUS_CANCELED,
+        ])->first();
+    }
+
+    public function getMonthlyStats($year = null)
+    {
+        $year = $year ?? now()->year;
+        $orders = Order::whereYear('created_at', $year)
+            ->selectRaw('
+                MONTH(created_at) as month_no,
+                SUM(total) as total_amount,
+                SUM(CASE WHEN status = ? THEN total ELSE 0 END) as ordered_amount,
+                SUM(CASE WHEN status = ? THEN total ELSE 0 END) as delivered_amount,
+                SUM(CASE WHEN status = ? THEN total ELSE 0 END) as canceled_amount
+            ', [
+                Order::STATUS_ORDERED,
+                Order::STATUS_DELIVERED,
+                Order::STATUS_CANCELED,
+            ])
+            ->groupByRaw('MONTH(created_at)')
+            ->get()
+            ->keyBy('month_no');
+
+        return collect(range(1, 12))->map(function ($month) use ($orders) {
+            $date = Carbon::createFromDate(null, $month, 1);
+
+            return (object) [
+                'MonthNo' => $month,
+                'MonthName' => $date->format('M'),
+                'TotalAmount' => $orders[$month]->total_amount ?? 0,
+                'TotalOrderedAmount' => $orders[$month]->ordered_amount ?? 0,
+                'TotalDeliveredAmount' => $orders[$month]->delivered_amount ?? 0,
+                'TotalCanceledAmount' => $orders[$month]->canceled_amount ?? 0,
+            ];
+        });
+    }
+}

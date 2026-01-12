@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Controllers\Front;
+
+use App\Models\Order;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+
+class MyAccountController extends Controller
+{
+    public function index()
+    {
+        return view('front.account.my-account');
+    }
+    public function orders()
+    {
+        $userId = Auth::user()->id;
+        $orders = Order::withCount('orderItems')->where('user_id', $userId)->latest()->paginate(10);
+        return view('front.account.orders', compact('orders'));
+    }
+
+    public function order_details(Order $order)
+    {
+        $order->load('orderItems.product.category',
+            'orderItems.product.brand',
+            'transaction'
+        );
+        return view('front.account.order-details', compact('order'));
+    }
+
+    public function update_order_status(Request $request, Order $order)
+    {
+        $order->update([
+            'status'=> 'canceled',
+            'canceled_date' => now(),
+        ]);
+        return back()->with('success','Order has been canceled successfully!');
+    }
+
+}

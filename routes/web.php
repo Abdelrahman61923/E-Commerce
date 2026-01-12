@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\CheckoutController;
+use App\Http\Controllers\Front\MyAccountController;
 use App\Http\Controllers\Front\ShopController;
 use App\Http\Controllers\Front\WishlistController;
 use Illuminate\Support\Facades\Route;
@@ -12,7 +13,6 @@ Auth::routes();
 
 Route::controller(HomeController::class)->group(function () {
     Route::get('/','index')->name('home');
-    Route::get('/my-account','account')->name('account');
 });
 
 Route::controller(ShopController::class)->group(function () {
@@ -46,6 +46,14 @@ Route::controller(CheckoutController::class)
         Route::get('/checkout','checkout')->name('checkout');
         Route::post('/order/place','place_an_order')->name('place');
         Route::get('/order/confirmation/{order}','order_confirmation')->name('confirmation');
+});
+
+Route::middleware('auth')->controller(MyAccountController::class)
+    ->name('user.')->group(function () {
+        Route::get('/my-account','index')->name('index');
+        Route::get('/account-orders','orders')->name('orders');
+        Route::get('/account-order/{order}/details','order_details')->name('orders.details');
+        Route::put('/account-order/canceled/{order}','update_order_status')->name('orders.update');
 });
 
 require __DIR__.'/dashboard.php';
