@@ -6,7 +6,6 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 
 class ProductService
 {
@@ -26,67 +25,40 @@ class ProductService
 
     public function add(array $data)
     {
-        if (isset($data['image']) && $data['image'] instanceof UploadedFile) {
-            $data['image'] = $this->uploadImage($data['image']);
+        $product = Product::create($data);
+
+        if (!empty($data['image'])) {
+            $product->addMedia($data['image'])->toMediaCollection('main_image');
         }
 
         if (!empty($data['images']) && is_array($data['images'])) {
-            $data['images'] = $this->uploadGalleryImages($data['images']);
+            foreach ($data['images'] as $image) {
+                $product->addMedia($image)->toMediaCollection('gallery');
+            }
         }
 
-        return Product::create($data);
+        return $product;
     }
 
     public function update(Product $product, array $data)
     {
-        if (isset($data['image']) && $data['image'] instanceof UploadedFile) {
-            if ($product->image && Storage::disk('public')->exists($product->image)) {
-                Storage::disk('public')->delete($product->image);
-            }
-            $data['image'] = $this->uploadImage($data['image']);
+        $product->update($data);
+
+        if (!empty($data['image'])) {
+            $product->addMedia($data['image'])->toMediaCollection('main_image');
         }
 
         if (!empty($data['images']) && is_array($data['images'])) {
-            if ($product->images) {
-                foreach ($product->images as $img) {
-                    if (Storage::disk('public')->exists($img)) {
-                        Storage::disk('public')->delete($img);
-                    }
-                }
+            $product->clearMediaCollection('gallery');
+            foreach ($data['images'] as $image) {
+                $product->addMedia($image)->toMediaCollection('gallery');
             }
-            $data['images'] = $this->uploadGalleryImages($data['images']);
         }
-        $product->update($data);
         return $product;
     }
+
     public function delete(Product $product)
     {
-        if ($product->image && Storage::disk('public')->exists($product->image)) {
-            Storage::disk('public')->delete($product->image);
-        }
-        if ($product->images && is_array($product->images)) {
-            foreach ($product->images as $img) {
-                if (Storage::disk('public')->exists($img)) {
-                    Storage::disk('public')->delete($img);
-                }
-            }
-        }
         return $product->delete();
-    }
-
-    protected function uploadImage(UploadedFile $imageFile): string
-    {
-        $mainPath = $imageFile->store('uploads/products', 'public');
-        // $imageFile->store('uploads/products/gallery', 'public');
-        return $mainPath;
-    }
-
-    protected function uploadGalleryImages(array $images): array
-    {
-        return collect($images)
-            ->map(function ($image) {
-                return $image->store('uploads/products/gallery', 'public');
-            })
-            ->toArray();
     }
 }

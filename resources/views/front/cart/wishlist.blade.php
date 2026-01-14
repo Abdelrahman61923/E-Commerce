@@ -22,7 +22,7 @@
                                     <tr>
                                         <td>
                                             <div class="shopping-cart__product-item">
-                                                <img loading="lazy" src="{{ asset('storage/' . $item->model->image) }}"
+                                                <img loading="lazy" src="{{ $item->model->image_url }}"
                                                     width="120" height="120" alt="{{ $item->name }}" />
                                             </div>
                                         </td>

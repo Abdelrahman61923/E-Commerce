@@ -36,9 +36,8 @@ class ProductRequest extends FormRequest
             'stock_status' => ['required', Rule::in(['instock', 'outofstock'])],
             'featured' => ['boolean'],
             'quantity' => ['required', 'integer', 'min:0'],
-            'image' => ['nullable', 'image', 'max:2048', 'mimes:jpg,png,jpeg'],
-            'images' => ['nullable', 'array'],
-            'images.*' => ['image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'image' => ['image', 'max:1048576', 'mimes:png,jpg,jpeg,webp', 'dimensions:min_width=100,min_height=100'],
+            'images.*' => ['image', 'max:1048576', 'mimes:jpg,jpeg,png', 'dimensions:min_width=100,min_height=100'],
         ];
     }
 }

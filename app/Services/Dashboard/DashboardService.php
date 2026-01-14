@@ -14,23 +14,17 @@ class DashboardService
     }
     public function getDashboardStats()
     {
-        return Order::selectRaw('
-            COUNT(*) as total_orders,
-            SUM(total) as total_amount,
-            SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as delivered_orders,
-            SUM(CASE WHEN status = ? THEN total ELSE 0 END) as delivered_amount,
-            SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as pending_orders,
-            SUM(CASE WHEN status = ? THEN total ELSE 0 END) as pending_amount,
-            SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as canceled_orders,
-            SUM(CASE WHEN status = ? THEN total ELSE 0 END) as canceled_amount
-        ', [
-            Order::STATUS_DELIVERED,
-            Order::STATUS_DELIVERED,
-            Order::STATUS_ORDERED,
-            Order::STATUS_ORDERED,
-            Order::STATUS_CANCELED,
-            Order::STATUS_CANCELED,
-        ])->first();
+        $orders = Order::all();
+        return [
+            'total_orders' => $orders->count(),
+            'total_amount' => $orders->sum('total'),
+            'delivered_orders' => $orders->where('status', Order::STATUS_DELIVERED)->count(),
+            'delivered_amount' => $orders->where('status', Order::STATUS_DELIVERED)->sum('total'),
+            'pending_orders' => $orders->where('status', Order::STATUS_ORDERED)->count(),
+            'pending_amount' => $orders->where('status', Order::STATUS_ORDERED)->sum('total'),
+            'canceled_orders' => $orders->where('status', Order::STATUS_CANCELED)->count(),
+            'canceled_amount' => $orders->where('status', Order::STATUS_CANCELED)->sum('total'),
+        ];
     }
 
     public function getMonthlyStats($year = null)

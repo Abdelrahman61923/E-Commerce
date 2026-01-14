@@ -49,8 +49,8 @@
                                 <div class="text-tiny mt-3">{{ $product->slug }}</div>
                             </div>
                         </td>
-                        <td>{{ App\Helpers\Currency::format($product->price) }}</td>
-                        <td>{{ App\Helpers\Currency::format($product->sale_price) }}</td>
+                        <td>{{ Currency::format($product->price) }}</td>
+                        <td>{{ Currency::format($product->sale_price) }}</td>
                         <td>{{ $product->SKU }}</td>
                         <td>{{ $product->category->name }}</td>
                         <td>{{ $product->brand->name }}</td>

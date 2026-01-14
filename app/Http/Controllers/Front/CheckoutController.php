@@ -70,7 +70,7 @@ class CheckoutController extends Controller
         if ($request->mode == 'card') {
             //
         }
-        elseif ($request->mode == 'paypal') {
+        elseif ($request->mode == 'paymob') {
             //
         }
         elseif ($request->mode == 'cod') {

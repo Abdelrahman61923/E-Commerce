@@ -32,7 +32,7 @@ class CategoryService
     {
         $category = Category::create($data);
         if (!empty($data['image'])) {
-            $category->addMedia($data['image'])->toMediaCollection('main');
+            $category->addMedia($data['image'])->toMediaCollection('image');
         }
         return $category;
     }
@@ -41,8 +41,7 @@ class CategoryService
     {
         $category->update($data);
         if (!empty($data['image'])) {
-            $category->clearMediaCollection('main');
-            $category->addMedia($data['image'])->toMediaCollection('main');
+            $category->addMedia($data['image'])->toMediaCollection('image');
         }
         return $category;
     }

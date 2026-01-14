@@ -26,7 +26,7 @@ class CategoryRequest extends FormRequest
             'name' => ['required', 'string', 'min:3', 'max:255',
                 Rule::unique('categories', 'name')->ignore($this->category)],
             'parent_id' => ['nullable', 'int', 'exists:categories,id'],
-            'image' => ['image', 'max:1048576', 'dimensions:min_width=100,min_height=100'],
+            'image' => ['image', 'max:1048576', 'mimes:png,jpg,jpeg,webp', 'dimensions:min_width=100,min_height=100'],
         ];
     }
 }

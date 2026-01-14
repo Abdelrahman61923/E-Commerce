@@ -29,15 +29,17 @@
         <div class="body-title mb-10">Upload images <span class="tf-color-1">*</span>
         </div>
         <div class="upload-image flex-grow">
-            @if ($product->image)
+
+            @if ($product->getFirstMediaUrl('main_image'))
                 <div class="item" id="imgpreview">
-                    <img src="{{ asset('storage/' . $product->image) }}" class="effect8" alt="{{ $product->name }}">
+                    <img src="{{ $product->image_url }}" class="effect8" alt="">
                 </div>
             @else
                 <div class="item" id="imgpreview" style="display:none">
-                    <img src="../../../localhost_8000/images/upload/upload-1.png" class="effect8" alt="">
+                    <img src="{{ $product->image_url }}" class="effect8" alt="">
                 </div>
             @endif
+
             <div id="upload-file" class="item up-load">
                 <label class="uploadfile" for="myFile">
                     <span class="icon">
@@ -55,15 +57,17 @@
         <div class="body-title mb-10">Upload Gallery Images</div>
         <div class="upload-image mb-16">
             <div id="galleryPreview" class="flex gap-4 mb-4">
-                @if ($product->images)
-                    @foreach ($product->images as $img)
+
+                @if ($product->getMedia('gallery'))
+                    @foreach ($product->getMedia('gallery') as $img)
                         <div class="item">
-                            <img src="{{ asset('storage/' . $img) }}"
+                            <img src="{{ $img->getUrl() }}"
                                 style="width:120px; height:120px; object-fit:cover; border-radius:8px;"
                                 alt="Gallery Image">
                         </div>
                     @endforeach
                 @endif
+
             </div>
             <div id="galUpload" class="item up-load">
                 <label class="uploadfile" for="gFile">

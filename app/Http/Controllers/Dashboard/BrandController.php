@@ -16,7 +16,7 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $brands = $this->brandService->getAll(5);
+        $brands = $this->brandService->getAll(8);
         return view('dashboard.brands.index', compact('brands'));
     }
 

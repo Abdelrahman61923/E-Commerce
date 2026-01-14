@@ -21,9 +21,17 @@
     <div class="body-title">Upload images <span class="tf-color-1">*</span>
     </div>
     <div class="upload-image flex-grow">
-        <div class="item" id="imgpreview">
-            <img src="{{ $category->image_url }}" class="effect8" alt="{{ $category->name }}">
-        </div>
+
+        @if ($category->getFirstMediaUrl('image'))
+            <div class="item" id="imgpreview">
+                <img src="{{ $category->image_url }}" class="effect8" alt="">
+            </div>
+        @else
+            <div class="item" id="imgpreview" style="display:none">
+                <img src="{{ $category->image_url }}" class="effect8" alt="">
+            </div>
+        @endif
+
         <div id="upload-file" class="item up-load">
             <label class="uploadfile" for="myFile">
                 <span class="icon">

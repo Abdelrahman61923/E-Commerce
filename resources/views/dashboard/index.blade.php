@@ -15,7 +15,7 @@
                             </div>
                             <div>
                                 <div class="body-text mb-2">Total Orders</div>
-                                <h4>{{ $stats->total_orders }}</h4>
+                                <h4>{{ $stats['total_orders'] }}</h4>
                             </div>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                             </div>
                             <div>
                                 <div class="body-text mb-2">Total Amount</div>
-                                <h4>{{ $stats->total_amount }}</h4>
+                                <h4>{{ $stats['total_amount'] }}</h4>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                             </div>
                             <div>
                                 <div class="body-text mb-2">Pending Orders</div>
-                                <h4>{{ $stats->pending_orders }}</h4>
+                                <h4>{{ $stats['pending_orders'] }}</h4>
                             </div>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                             </div>
                             <div>
                                 <div class="body-text mb-2">Pending Orders Amount</div>
-                                <h4>{{ $stats->pending_amount }}</h4>
+                                <h4>{{ $stats['pending_amount'] }}</h4>
                             </div>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                             </div>
                             <div>
                                 <div class="body-text mb-2">Delivered Orders</div>
-                                <h4>{{ $stats->delivered_orders }}</h4>
+                                <h4>{{ $stats['delivered_orders'] }}</h4>
                             </div>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                             </div>
                             <div>
                                 <div class="body-text mb-2">Delivered Orders Amount</div>
-                                <h4>{{ $stats->delivered_amount }}</h4>
+                                <h4>{{ $stats['delivered_amount'] }}</h4>
                             </div>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                             </div>
                             <div>
                                 <div class="body-text mb-2">Canceled Orders</div>
-                                <h4>{{ $stats->canceled_orders }}</h4>
+                                <h4>{{ $stats['canceled_orders'] }}</h4>
                             </div>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                             </div>
                             <div>
                                 <div class="body-text mb-2">Canceled Orders Amount</div>
-                                <h4>{{ $stats->canceled_amount }}</h4>
+                                <h4>{{ $stats['canceled_amount'] }}</h4>
                             </div>
                         </div>
                     </div>

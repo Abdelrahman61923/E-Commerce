@@ -14,10 +14,16 @@ class Slide extends Model implements HasMedia
         'tagline', 'title', 'subtitle', 'link', 'status'
     ];
 
+    // Media Collection
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('image')->singleFile();
+    }
+
     // Accessors
     public function getImageUrlAttribute()
     {
-        return $this->getFirstMediaUrl('main')
+        return $this->getFirstMediaUrl('image')
             ?: asset('assets/images/no_product.png');
     }
 }

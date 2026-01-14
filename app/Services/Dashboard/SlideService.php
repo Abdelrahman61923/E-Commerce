@@ -15,7 +15,7 @@ class SlideService
     {
         $slide = Slide::create($data);
         if (!empty($data['image'])) {
-            $slide->addMedia($data['image'])->toMediaCollection('main');
+            $slide->addMedia($data['image'])->toMediaCollection('image');
         }
         return $slide;
     }
@@ -24,8 +24,7 @@ class SlideService
     {
         $slide->update($data);
         if (!empty($data['image'])) {
-            $slide->clearMediaCollection('main');
-            $slide->addMedia($data['image'])->toMediaCollection('main');
+            $slide->addMedia($data['image'])->toMediaCollection('image');
         }
         return $slide;
     }

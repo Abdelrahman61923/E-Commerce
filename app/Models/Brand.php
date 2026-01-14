@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Brand extends Model implements HasMedia
 {
@@ -17,6 +18,12 @@ class Brand extends Model implements HasMedia
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    // Media Collection
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('logo')->singleFile();
     }
 
     // Relations
@@ -39,7 +46,7 @@ class Brand extends Model implements HasMedia
     // Accessors
     public function getImageUrlAttribute()
     {
-        return $this->getFirstMediaUrl('main')
+        return $this->getFirstMediaUrl('logo')
             ?: asset('assets/images/no_product.png');
     }
 }

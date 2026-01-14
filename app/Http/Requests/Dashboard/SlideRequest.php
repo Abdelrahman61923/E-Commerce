@@ -25,7 +25,7 @@ class SlideRequest extends FormRequest
             'tagline' => ['required', 'string', 'max:255'],
             'title' => ['required', 'string', 'max:255'],
             'subtitle' => ['required', 'string', 'max:255'],
-            'image' => ['image', 'max:1048576', 'dimensions:min_width=100,min_height=100'],
+            'image' => ['image', 'max:1048576', 'mimes:png,jpg,jpeg,webp', 'dimensions:min_width=100,min_height=100'],
             'link' => ['required', 'url'],
             'status' => ['required', 'in:active,inactive'],
         ];

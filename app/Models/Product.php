@@ -5,21 +5,30 @@ namespace App\Models;
 use App\Enums\ProductStockStatus;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Product extends Model
+class Product extends Model implements HasMedia
 {
+    use InteractsWithMedia;
     protected $fillable = [
         'brand_id', 'category_id', 'name', 'slug', 'short_description', 'description',
-        'price', 'sale_price', 'SKU', 'stock_status', 'featured', 'quantity', 'image', 'images',
+        'price', 'sale_price', 'SKU', 'stock_status', 'featured', 'quantity',
     ];
     protected $casts = [
-        'images' => 'array',
         'stock_status' => ProductStockStatus::class,
     ];
 
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    // Media Collection
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('main_image')->singleFile();
+        $this->addMediaCollection('gallery');
     }
 
     // Relations
@@ -46,32 +55,34 @@ class Product extends Model
     // Accessors
     public function getImageUrlAttribute()
     {
-        if (!$this->image) {
-            return asset('assets/images/no_product.png');
-        }
-        return asset('storage/' . $this->image);
+        return $this->getFirstMediaUrl('main_image')
+            ?: asset('assets/images/no_product.png');
     }
+
     public function getImagesUrlsAttribute()
     {
-        if (empty($this->images)) {
-            if (!empty($this->image)) {
-                return [];
-            }
-            return [asset('assets/images/no_product.png')];
+        $images = $this->getMedia('gallery');
+        if ($images->isEmpty()) {
+            return [];
         }
-        return collect($this->images)->map(function ($image) {
-            return asset('storage/' . $image);
+        return $images->map(function ($media) {
+            return $media->getUrl();
         })->toArray();
     }
+
     public function getAllImagesAttribute()
     {
         $images = [];
-        if ($this->image) {
+        if ($this->getFirstMediaUrl('main_image')) {
             $images[] = $this->image_url;
         }
         foreach ($this->images_urls as $img) {
             $images[] = $img;
         }
+        if (empty($images)) {
+            return [asset('assets/images/no_product.png')];
+        }
+
         return $images;
     }
 }

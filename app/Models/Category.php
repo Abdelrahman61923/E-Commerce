@@ -19,6 +19,12 @@ class Category extends Model implements HasMedia
         return 'slug';
     }
 
+    // Media Collection
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('image')->singleFile();
+    }
+
     // Relations
     public function parent()
     {
@@ -47,7 +53,7 @@ class Category extends Model implements HasMedia
     // Accessors
     public function getImageUrlAttribute()
     {
-        return $this->getFirstMediaUrl('main')
+        return $this->getFirstMediaUrl('image')
             ?: asset('assets/images/no_product.png');
     }
 }

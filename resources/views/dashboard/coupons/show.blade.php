@@ -38,7 +38,11 @@
                             <td>{{ $coupon->id }}</td>
                             <td>{{ $coupon->code }}</td>
                             <td>{{ $coupon->type }}</td>
-                            <td>{{ $coupon->value }}</td>
+                            @if ($coupon->type == 'percent')
+                                <td>%{{ $coupon->value }}</td>
+                            @else
+                                <td>{{ $coupon->value }}</td>
+                            @endif
                             <td>{{ $coupon->cart_value }}</td>
                             <td>{{ $coupon->expiry_date }}</td>
                         </tr>

@@ -5,7 +5,9 @@
 @section('breadcrumb')
     @parent
     <li><i class="icon-chevron-right"></i></li>
-    <li><div class="text-tiny">Coupons</div></li>
+    <li>
+        <div class="text-tiny">Coupons</div>
+    </li>
 @endsection
 
 @section('content')
@@ -23,7 +25,8 @@
                     </div>
                 </form>
             </div>
-            <a class="tf-button style-1 w208" href="{{ route('admin.coupons.create') }}"><i class="icon-plus"></i>Add new</a>
+            <a class="tf-button style-1 w208" href="{{ route('admin.coupons.create') }}"><i class="icon-plus"></i>Add
+                new</a>
         </div>
         <div class="wg-table table-all-user">
             <div class="table-responsive">
@@ -49,11 +52,16 @@
                                     <td>{{ $coupon->id }}</td>
                                     <td>
                                         <div class="name">
-                                            <a href="{{ route('admin.coupons.show', $coupon->code) }}" class="body-title-2">{{ $coupon->code }}</a>
+                                            <a href="{{ route('admin.coupons.show', $coupon->code) }}"
+                                                class="body-title-2">{{ $coupon->code }}</a>
                                         </div>
                                     </td>
                                     <td>{{ $coupon->type }}</td>
-                                    <td>{{ $coupon->value }}</td>
+                                    @if ($coupon->type == 'percent')
+                                        <td>%{{ $coupon->value }}</td>
+                                    @else
+                                        <td>{{ $coupon->value }}</td>
+                                    @endif
                                     <td>{{ $coupon->cart_value }}</td>
                                     <td>{{ $coupon->expiry_date }}</td>
                                     <td>
@@ -63,7 +71,8 @@
                                                     <i class="icon-edit-3"></i>
                                                 </div>
                                             </a>
-                                            <form action="{{ route('admin.coupons.destroy', $coupon->code) }}" method="post">
+                                            <form action="{{ route('admin.coupons.destroy', $coupon->code) }}"
+                                                method="post">
                                                 @csrf
                                                 @method('delete')
                                                 <button type="submit" class="item text-danger delete">
@@ -76,7 +85,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="6" class="text-muted text-center">No Coupons defined.</td>
+                                <td colspan="7" class="text-muted text-center">No Coupons defined.</td>
                             </tr>
                         @endif
                     </tbody>

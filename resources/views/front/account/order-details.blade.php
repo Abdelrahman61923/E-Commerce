@@ -176,8 +176,8 @@
                                         <tr>
                                             <td class="pname">
                                                 <div class="image">
-                                                    <img src="{{ asset('storage/' . $item->product->image) }}"
-                                                        alt="" class="image">
+                                                    <img src="{{ $item->product->image_url }}"
+                                                        alt="{{ $item->product->name }}" class="image">
                                                 </div>
                                                 <div class="name">
                                                     <a href="{{ route('shop.show', $item->product->slug) }}"
@@ -193,7 +193,7 @@
                                             <td class="text-center">{{ $item->options }}</td>
                                             <td class="text-center">{{ $item->rstatus ? 'Yes' : 'No' }}</td>
                                             <td class="text-center">
-                                                <a href="http://localhost:8000/shop/product1" target="_blank">
+                                                <a href="{{ route('shop.show', $item->product->slug) }}" target="_blank">
                                                     <div class="list-icon-function view-icon">
                                                         <div class="item eye">
                                                             <i class="fa fa-eye"></i>

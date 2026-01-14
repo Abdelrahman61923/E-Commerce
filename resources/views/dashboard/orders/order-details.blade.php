@@ -84,7 +84,7 @@
                         <tr>
                             <td class="pname">
                                 <div class="image">
-                                    <img src="{{ asset('storage/' . $item->product->image) }}" alt=""
+                                    <img src="{{ $item->product->image_url }}" alt=""
                                         class="image">
                                 </div>
                                 <div class="name">

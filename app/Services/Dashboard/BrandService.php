@@ -16,7 +16,7 @@ class BrandService
     {
         $brand = Brand::create($data);
         if (!empty($data['image'])) {
-            $brand->addMedia($data['image'])->toMediaCollection('main');
+            $brand->addMedia($data['image'])->toMediaCollection('logo');
         }
         return $brand;
     }
@@ -25,8 +25,7 @@ class BrandService
     {
         $brand->update($data);
         if (!empty($data['image'])) {
-            $brand->clearMediaCollection('main');
-            $brand->addMedia($data['image'])->toMediaCollection('main');
+            $brand->addMedia($data['image'])->toMediaCollection('logo');
         }
         return $brand;
     }
