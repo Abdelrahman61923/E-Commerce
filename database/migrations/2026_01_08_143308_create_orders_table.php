@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -27,8 +28,9 @@ return new class extends Migration
             $table->string('country');
             $table->string('landmark')->nullable();
             $table->string('zip');
-            $table->enum('type', ['home', 'office'])->default('home');
-            $table->enum('status', ['ordered','delivered', 'canceled'])->default('ordered');
+            $table->enum('type', ['home', 'work', 'other'])->default('home');
+            $table->enum('status', OrderStatus::values())
+                ->default(OrderStatus::ORDERED->value);
             $table->boolean('is_shipping_different')->default(false);
             $table->date('delivered_date')->nullable();
             $table->date('canceled_date')->nullable();

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->enum('type', array_column(UserType::cases(),'value'))
+            $table->enum('type', UserType::values())
                 ->default(UserType::USER->value);
             $table->string('phone_number')->unique();
             $table->timestamp('email_verified_at')->nullable();

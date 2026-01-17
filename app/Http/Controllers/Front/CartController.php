@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Enums\CouponType;
 use Carbon\Carbon;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
@@ -88,7 +89,7 @@ class CartController extends Controller
         if (Session::has('coupon')) {
             $cartSubtotal = (float) str_replace(',', '', Cart::instance('cart')->subtotal());
 
-            if (Session::get('coupon')['type'] == 'fixed') {
+            if (Session::get('coupon')['type'] == CouponType::FIXED) {
                 $discount = (float) Session::get('coupon')['value'];
             } else {
                 $discount = ($cartSubtotal * (float) Session::get('coupon')['value']) / 100;
@@ -101,8 +102,8 @@ class CartController extends Controller
             Session::put('discounts', [
                 'discount' => number_format($discount, 2, '.', ''),
                 'subtotal' => number_format($subtotalAfterDiscount, 2, '.', ''),
-                'tax'      => number_format($taxAfterDiscounted, 2, '.', ''),
-                'total'    => number_format($totalAfterDiscount, 2, '.', ''),
+                'tax' => number_format($taxAfterDiscounted, 2, '.', ''),
+                'total' => number_format($totalAfterDiscount, 2, '.', ''),
             ]);
         }
     }

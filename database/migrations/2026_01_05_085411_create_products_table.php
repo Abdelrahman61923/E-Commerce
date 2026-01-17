@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ProductStockStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,10 +20,10 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('short_description')->nullable();
             $table->text('description');
-            $table->decimal('price');
-            $table->decimal('sale_price')->nullable();
+            $table->decimal('price', 10, 2);
+            $table->decimal('sale_price', 10, 2)->nullable();
             $table->string('SKU')->unique();
-            $table->enum('stock_status', ['instock','outofstock']);
+            $table->enum('stock_status', ProductStockStatus::values());
             $table->boolean('featured')->default(0);
             $table->unsignedSmallInteger('quantity')->default(10);
             $table->timestamps();

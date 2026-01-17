@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Order extends Model
 {
@@ -13,14 +14,9 @@ class Order extends Model
         'delivered_date','canceled_date',
     ];
 
-    const STATUS_DELIVERED = 'delivered';
-    const STATUS_ORDERED = 'ordered';
-    const STATUS_CANCELED = 'canceled';
-
-    public static function statuses()
-    {
-        return self::getConstantsWithPrefix('STATUS_');
-    }
+    protected $casts = [
+        'status' => OrderStatus::class,
+    ];
 
     // Relations
     public function user()

@@ -57,7 +57,7 @@
                                         </div>
                                     </td>
                                     <td>{{ $coupon->type }}</td>
-                                    @if ($coupon->type == 'percent')
+                                    @if ($coupon->type == \App\Enums\CouponType::PERCENT)
                                         <td>%{{ $coupon->value }}</td>
                                     @else
                                         <td>{{ $coupon->value }}</td>

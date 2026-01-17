@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use App\Enums\ProductStockStatus;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
+use App\Enums\ProductStockStatus;
 use Spatie\MediaLibrary\HasMedia;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Product extends Model implements HasMedia
@@ -44,6 +45,9 @@ class Product extends Model implements HasMedia
     // Global Scope
     protected static function booted()
     {
+        // static::addGlobalScope('stock_status', function (Builder $builder) {
+        //     $builder->where('stock_status', ProductStockStatus::INSTOCK);
+        // });
         static::creating(function ($product) {
             $product->slug = Str::slug($product->name);
         });

@@ -104,8 +104,11 @@
 
     <div class="cols gap22">
         <fieldset class="name">
-            <x-form.select class="select mb-10" label="Stock" name="stock_status" :options="['instock' => 'In Stock', 'outofstock' => 'Out of Stock']"
-                :selected="$product->stock_status ?? ''" />
+            <x-form.select class="select mb-10" label="Stock" name="stock_status" :options="[
+                \App\Enums\ProductStockStatus::INSTOCK->value => 'In Stock',
+                \App\Enums\ProductStockStatus::OUTOFSTOCK->value => 'Out of Stock',
+            ]"
+                :selected="$product->stock_status->value ?? ''" />
         </fieldset>
         <fieldset class="name">
             <x-form.select class="select mb-10" label="Featured" name="featured" :options="['1' => 'Yes', '0' => 'No']"

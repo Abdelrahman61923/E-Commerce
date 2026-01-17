@@ -2,6 +2,7 @@
 
 namespace App\Services\Dashboard;
 
+use App\Enums\OrderStatus;
 use Carbon\Carbon;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
@@ -18,12 +19,12 @@ class DashboardService
         return [
             'total_orders' => $orders->count(),
             'total_amount' => $orders->sum('total'),
-            'delivered_orders' => $orders->where('status', Order::STATUS_DELIVERED)->count(),
-            'delivered_amount' => $orders->where('status', Order::STATUS_DELIVERED)->sum('total'),
-            'pending_orders' => $orders->where('status', Order::STATUS_ORDERED)->count(),
-            'pending_amount' => $orders->where('status', Order::STATUS_ORDERED)->sum('total'),
-            'canceled_orders' => $orders->where('status', Order::STATUS_CANCELED)->count(),
-            'canceled_amount' => $orders->where('status', Order::STATUS_CANCELED)->sum('total'),
+            'delivered_orders' => $orders->where('status', operator: OrderStatus::DELIVERED)->count(),
+            'delivered_amount' => $orders->where('status', OrderStatus::DELIVERED)->sum('total'),
+            'pending_orders' => $orders->where('status', OrderStatus::ORDERED)->count(),
+            'pending_amount' => $orders->where('status', OrderStatus::ORDERED)->sum('total'),
+            'canceled_orders' => $orders->where('status', OrderStatus::CANCELED)->count(),
+            'canceled_amount' => $orders->where('status', OrderStatus::CANCELED)->sum('total'),
         ];
     }
 
@@ -38,9 +39,9 @@ class DashboardService
                 SUM(CASE WHEN status = ? THEN total ELSE 0 END) as delivered_amount,
                 SUM(CASE WHEN status = ? THEN total ELSE 0 END) as canceled_amount
             ', [
-                Order::STATUS_ORDERED,
-                Order::STATUS_DELIVERED,
-                Order::STATUS_CANCELED,
+                OrderStatus::ORDERED,
+                OrderStatus::DELIVERED,
+                OrderStatus::CANCELED,
             ])
             ->groupByRaw('MONTH(created_at)')
             ->get()

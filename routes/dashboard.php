@@ -10,7 +10,7 @@ use App\Http\Controllers\Dashboard\OrderController;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\SlideController;
 
-Route::middleware(['auth', 'auth.type:' . UserType::ADMIN->value])
+Route::middleware(['auth', 'mark.notification.as.read','auth.type:' . UserType::ADMIN->value])
     ->prefix('admin')->name('admin.')->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/dashboard','index')->name('dashboard');

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone')->nullable();
             $table->text('comment');
-            $table->enum('status', array_column(ContactStatus::cases(), 'value'))->default(ContactStatus::NEW->value);
+            $table->enum('status', ContactStatus::values())->default(ContactStatus::NEW->value);
             $table->timestamps();
         });
     }

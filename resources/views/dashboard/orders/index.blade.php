@@ -55,9 +55,9 @@
                                 <td class="text-center">{{ Currency::format($order->tax) }}</td>
                                 <td class="text-center">{{ Currency::format($order->total) }}</td>
                                 <td class="text-center">
-                                    @if ($order->status == 'delivered')
+                                    @if ($order->status == \App\Enums\OrderStatus::DELIVERED)
                                         <span class="badge bg-success fs-5">Delivered</span>
-                                    @elseif ($order->status == 'canceled')
+                                    @elseif ($order->status == \App\Enums\OrderStatus::CANCELED)
                                         <span class="badge bg-danger fs-5">Canceled</span>
                                     @else
                                         <span class="badge bg-warning fs-5">Ordered</span>

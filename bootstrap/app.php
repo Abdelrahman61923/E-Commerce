@@ -12,6 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
+            'mark.notification.as.read' => \App\Http\Middleware\MarkNotificationAsRead::class,
             'auth.type' => \App\Http\Middleware\CheckUserType::class,
         ]);
     })

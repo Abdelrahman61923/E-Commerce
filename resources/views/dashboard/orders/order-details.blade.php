@@ -45,9 +45,9 @@
                 <tr>
                     <th>Order Status</th>
                     <td colspan="5">
-                        @if ($order->status == 'delivered')
+                        @if ($order->status == \App\Enums\OrderStatus::DELIVERED)
                             <span class="badge bg-success fs-4">Delivered</span>
-                        @elseif ($order->status == 'canceled')
+                        @elseif ($order->status == \App\Enums\OrderStatus::CANCELED)
                             <span class="badge bg-danger fs-4">Canceled</span>
                         @else
                             <span class="badge bg-warning fs-4">Ordered</span>

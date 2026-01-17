@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\CouponType;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,7 +16,7 @@ return new class extends Migration
         Schema::create('coupons', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
-            $table->enum('type', ['fixed', 'percent']);
+            $table->enum('type', CouponType::values());
             $table->decimal('value');
             $table->decimal('cart_value');
             $table->date('expiry_date')->default(DB::raw("(DATE(CURRENT_TIMESTAMP))"));

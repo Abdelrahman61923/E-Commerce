@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Enums\OrderStatus;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -32,7 +33,7 @@ class MyAccountController extends Controller
     public function update_order_status(Request $request, Order $order)
     {
         $order->update([
-            'status'=> 'canceled',
+            'status'=> OrderStatus::CANCELED,
             'canceled_date' => now(),
         ]);
         return back()->with('success','Order has been canceled successfully!');
