@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use App\Observers\BrandObserver;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -35,12 +36,7 @@ class Brand extends Model implements HasMedia
     // Global Scope
     protected static function booted()
     {
-        static::creating(function ($brand) {
-            $brand->slug = Str::slug($brand->name);
-        });
-        static::updating(function ($brand) {
-            $brand->slug = Str::slug($brand->name);
-        });
+        Brand::observe(BrandObserver::class);
     }
 
     // Accessors

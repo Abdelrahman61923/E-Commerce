@@ -285,16 +285,16 @@
                         <a href="{{ route('home') }}" class="navigation__link">Home</a>
                     </li>
                     <li class="navigation__item">
-                        <a href="shop.html" class="navigation__link">Shop</a>
+                        <a href="{{ route('shop.index') }}" class="navigation__link">Shop</a>
                     </li>
                     <li class="navigation__item">
-                        <a href="cart.html" class="navigation__link">Cart</a>
+                        <a href="{{ route('cart.index') }}" class="navigation__link">Cart</a>
                     </li>
                     <li class="navigation__item">
-                        <a href="about.html" class="navigation__link">About</a>
+                        <a href="{{ route('about.index') }}" class="navigation__link">About</a>
                     </li>
                     <li class="navigation__item">
-                        <a href="contact.html" class="navigation__link">Contact</a>
+                        <a href="{{ route('contact.index') }}" class="navigation__link">Contact</a>
                     </li>
                 </ul>
             </div>

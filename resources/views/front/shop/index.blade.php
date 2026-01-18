@@ -386,7 +386,7 @@
                                                 <use href="#icon_next_sm" />
                                             </svg></span>
                                     </div>
-                                    @if ($product->stock_status == \App\Enums\ProductStockStatus::OUTOFSTOCK)
+                                    @if ($product->isOutOfStock())
                                         <a href="javascript:void(0)"
                                             class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium btn-warning mb-3">Sold
                                             Out</a>
@@ -480,7 +480,7 @@
                                         </form>
                                     @endif
                                 </div>
-                                @if ($product->stock_status == \App\Enums\ProductStockStatus::OUTOFSTOCK)
+                                @if ($product->isOutOfStock())
                                     <div
                                         class="pc-labels position-absolute top-0 start-0 w-100 d-flex justify-content-between">
                                         <div class="pc-labels__left">

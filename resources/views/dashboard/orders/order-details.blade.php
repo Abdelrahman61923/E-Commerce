@@ -84,8 +84,7 @@
                         <tr>
                             <td class="pname">
                                 <div class="image">
-                                    <img src="{{ $item->product->image_url }}" alt=""
-                                        class="image">
+                                    <img src="{{ $item->product->image_url }}" alt="" class="image">
                                 </div>
                                 <div class="name">
                                     <a href="{{ route('shop.show', $item->product->slug) }}" target="_blank"
@@ -175,8 +174,7 @@
             @method('PUT')
             <div class="row">
                 <div class="col-md-3">
-                    <x-form.select name="status" :options="['ordered' => 'Ordered', 'delivered' => 'Delivered', 'canceled' => 'Canceled']"
-                        :selected="$order->status ?? ''" />
+                    <x-form.select name="status" :options="\App\Enums\OrderStatus::options()" :selected="$order->status->value ?? ''" />
                 </div>
                 <div class="col-md 3">
                     <button type="submit" class="btn btn-primary tf-button w208">Update Status</button>

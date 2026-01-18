@@ -40,7 +40,6 @@ class ProductObserver
      */
     public function updated(Product $product): void
     {
-        $product->slug = Str::slug($product->name);
         if (! $product->wasChanged('quantity')) {
             return;
         }

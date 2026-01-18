@@ -91,6 +91,6 @@ class Product extends Model implements HasMedia
 
     public function isOutOfStock()
     {
-        return $this->quantity == 0;
+        return $this->stock_status == ProductStockStatus::OUTOFSTOCK;
     }
 }

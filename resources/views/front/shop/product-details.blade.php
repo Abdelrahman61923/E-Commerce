@@ -92,10 +92,8 @@
 
                     <div class="product-card__price d-flex">
                         @if ($product->sale_price)
-                            <span
-                                class="money price price-old">{{ Currency::format($product->price) }}</span>
-                            <span
-                                class="money price price-sale">{{ Currency::format($product->sale_price) }}</span>
+                            <span class="money price price-old">{{ Currency::format($product->price) }}</span>
+                            <span class="money price price-sale">{{ Currency::format($product->sale_price) }}</span>
                         @else
                             <span class="money price">{{ Currency::format($product->price) }}</span>
                         @endif
@@ -103,7 +101,9 @@
                     <div class="product-single__short-desc">
                         <p>{{ $product->short_description }}</p>
                     </div>
-                    @if (Cart::instance('cart')->content()->where('id', $product->id)->count() > 0)
+                    @if ($product->isOutOfStock())
+                        <a href="javascript:void(0)" class="btn btn-warning mb-3">Sold Out</a>
+                    @elseif (Cart::instance('cart')->content()->where('id', $product->id)->count() > 0)
                         <a href="{{ route('cart.index') }}" class="btn btn-warning mb-3">Go
                             to cart</a>
                     @else
@@ -127,9 +127,8 @@
                     @endif
                     <div class="product-single__addtolinks">
                         @if (\App\Models\Wishlist::where('product_id', $product->id)->count())
-                            <form
-                                action="{{ route('wishlist.item.remove', $product) }}"
-                                method="post" id="wishlist-item-remove">
+                            <form action="{{ route('wishlist.item.remove', $product) }}" method="post"
+                                id="wishlist-item-remove">
                                 @csrf
                                 @method('delete')
                                 <a href="javascript:void(0)"
@@ -450,7 +449,11 @@
                                                 class="pc__img pc__img-second">
                                         @endforeach
                                     </a>
-                                    @if (Cart::instance('cart')->content()->where('id', $rproduct->id)->count() > 0)
+                                    @if ($rproduct->isOutOfStock())
+                                        <a href="javascript:void(0)"
+                                            class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium btn-warning mb-3">Sold
+                                            Out</a>
+                                    @elseif (Cart::instance('cart')->content()->where('id', $rproduct->id)->count() > 0)
                                         <a href="{{ route('cart.index') }}"
                                             class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium btn-warning mb-3">Go
                                             to cart</a>
@@ -481,8 +484,7 @@
                                             <span
                                                 class="money price price-sale">{{ Currency::format($rproduct->sale_price) }}</span>
                                         @else
-                                            <span
-                                                class="money price">{{ Currency::format($rproduct->price) }}</span>
+                                            <span class="money price">{{ Currency::format($rproduct->price) }}</span>
                                         @endif
                                     </div>
 
@@ -495,6 +497,14 @@
                                         </svg>
                                     </button>
                                 </div>
+                                @if ($rproduct->isOutOfStock())
+                                    <div
+                                        class="pc-labels position-absolute top-0 start-0 w-100 d-flex justify-content-between">
+                                        <div class="pc-labels__left">
+                                            <span class="pc-label pc-label_new d-block bg-white">Sold Out</span>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         @endforeach
                     </div><!-- /.swiper-wrapper -->

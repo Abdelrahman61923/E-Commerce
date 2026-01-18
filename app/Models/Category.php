@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
+use App\Observers\CategoryObserver;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Category extends Model implements HasMedia
@@ -42,12 +43,7 @@ class Category extends Model implements HasMedia
     // Global Scope
     protected static function booted()
     {
-        static::creating(function ($category) {
-            $category->slug = Str::slug($category->name);
-        });
-        static::updating(function ($category) {
-            $category->slug = Str::slug($category->name);
-        });
+        Category::observe(CategoryObserver::class);
     }
 
     // Accessors
