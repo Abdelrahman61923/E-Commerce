@@ -93,17 +93,17 @@
                     <div class="product-card__price d-flex">
                         @if ($product->sale_price)
                             <span
-                                class="money price price-old">{{ App\Helpers\Currency::format($product->price) }}</span>
+                                class="money price price-old">{{ Currency::format($product->price) }}</span>
                             <span
-                                class="money price price-sale">{{ App\Helpers\Currency::format($product->sale_price) }}</span>
+                                class="money price price-sale">{{ Currency::format($product->sale_price) }}</span>
                         @else
-                            <span class="money price">{{ App\Helpers\Currency::format($product->price) }}</span>
+                            <span class="money price">{{ Currency::format($product->price) }}</span>
                         @endif
                     </div>
                     <div class="product-single__short-desc">
                         <p>{{ $product->short_description }}</p>
                     </div>
-                    @if (Surfsidemedia\Shoppingcart\Facades\Cart::instance('cart')->content()->where('id', $product->id)->count() > 0)
+                    @if (Cart::instance('cart')->content()->where('id', $product->id)->count() > 0)
                         <a href="{{ route('cart.index') }}" class="btn btn-warning mb-3">Go
                             to cart</a>
                     @else
@@ -126,9 +126,9 @@
                         </form>
                     @endif
                     <div class="product-single__addtolinks">
-                        @if (Cart::instance('wishlist')->content()->where('id', $product->id)->count())
+                        @if (\App\Models\Wishlist::where('product_id', $product->id)->count())
                             <form
-                                action="{{ route('wishlist.item.remove', ['rowId' => Surfsidemedia\Shoppingcart\Facades\Cart::instance('wishlist')->content()->where('id', $product->id)->first()->rowId]) }}"
+                                action="{{ route('wishlist.item.remove', $product) }}"
                                 method="post" id="wishlist-item-remove">
                                 @csrf
                                 @method('delete')
@@ -141,13 +141,8 @@
                                     </svg><span>Remove to Wishlist</span></a>
                             </form>
                         @else
-                            <form action="{{ route('wishlist.add') }}" method="post" id="wishlist-form">
+                            <form action="{{ route('wishlist.add', $product) }}" method="post" id="wishlist-form">
                                 @csrf
-                                <input type="hidden" name="id" value="{{ $product->id }}">
-                                <input type="hidden" name="name" value="{{ $product->name }}">
-                                <input type="hidden" name="price"
-                                    value="{{ $product->sale_price == '' ? $product->price : $product->sale_price }}">
-                                <input type="hidden" name="quantity" value="1">
                                 <a href="javascript:void(0)" class="menu-link menu-link_us-s add-to-wishlist"
                                     onclick="document.getElementById('wishlist-form').submit();"><svg width="16"
                                         height="16" viewBox="0 0 20 20" fill="none"

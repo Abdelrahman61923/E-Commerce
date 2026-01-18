@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use App\Enums\ProductStockStatus;
 use Spatie\MediaLibrary\HasMedia;
+use App\Observers\ProductObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -45,15 +46,7 @@ class Product extends Model implements HasMedia
     // Global Scope
     protected static function booted()
     {
-        // static::addGlobalScope('stock_status', function (Builder $builder) {
-        //     $builder->where('stock_status', ProductStockStatus::INSTOCK);
-        // });
-        static::creating(function ($product) {
-            $product->slug = Str::slug($product->name);
-        });
-        static::updating(function ($product) {
-            $product->slug = Str::slug($product->name);
-        });
+        Product::observe(ProductObserver::class);
     }
 
     // Accessors
@@ -88,5 +81,16 @@ class Product extends Model implements HasMedia
         }
 
         return $images;
+    }
+
+    public function isLowStock()
+    {
+        $threshold = 5;
+        return $this->quantity <= $threshold && $this->quantity > 0;
+    }
+
+    public function isOutOfStock()
+    {
+        return $this->quantity == 0;
     }
 }

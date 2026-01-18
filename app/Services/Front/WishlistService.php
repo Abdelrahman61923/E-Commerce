@@ -2,37 +2,54 @@
 
 namespace App\Services\Front;
 
-use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Models\Wishlist;
+use Illuminate\Support\Collection;
 use Surfsidemedia\Shoppingcart\Facades\Cart;
 
 class WishlistService
 {
-    public function getAll()
+    protected $items;
+    public function __construct()
     {
-        return Cart::instance('wishlist')->content();
+        $this->items = collect([]);
+    }
+    public function getWishlist():Collection
+    {
+        if (!$this->items->count()) {
+            $this->items = Wishlist::with('product')->get();
+        };
+        return $this->items;
     }
 
-    public function add(Request $request)
+    public function add(Product $product)
     {
-        return Cart::instance('wishlist')->add($request->id, $request->name, $request->quantity, $request->price)
-            ->associate('App\Models\Product');
+        $item = Wishlist::where('product_id', $product->id)->first();
+        if (!$item) {
+            return Wishlist::create([
+                'cookie_id' => Wishlist::getCookieId(),
+                'user_id' => auth()->check() ? auth()->id() : null,
+                'product_id'=> $product->id,
+            ]);
+        }
+        return $item;
     }
 
-    public function delete($rowId)
+    public function delete(Product $product)
     {
-        return Cart::instance('wishlist')->remove($rowId);
+        return Wishlist::where('product_id', $product->id)->delete();
     }
 
     public function empty()
     {
-        return Cart::instance('wishlist')->destroy();
+        return Wishlist::query()->delete();
     }
 
-    public function move($rowId)
+    public function move(Product $product)
     {
-        $item = Cart::instance('wishlist')->get($rowId);
-        Cart::instance('wishlist')->remove($rowId);
-        Cart::instance('cart')->add($item->id, $item->name, $item->qty, $item->price)
+        $item = Wishlist::where('product_id', $product->id)->first();
+        $item->delete();
+        Cart::instance('cart')->add($product->id, $product->name, 1, $product->price)
             ->associate('App\Models\Product');
     }
 }

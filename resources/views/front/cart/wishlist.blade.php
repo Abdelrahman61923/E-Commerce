@@ -22,37 +22,44 @@
                                     <tr>
                                         <td>
                                             <div class="shopping-cart__product-item">
-                                                <img loading="lazy" src="{{ $item->model->image_url }}"
-                                                    width="120" height="120" alt="{{ $item->name }}" />
+                                                <img loading="lazy" src="{{ $item->product->image_url }}" width="120"
+                                                    height="120" alt="{{ $item->product->name }}" />
                                             </div>
                                         </td>
                                         <td>
                                             <div class="shopping-cart__product-item__detail">
-                                                <h4>{{ $item->name }}</h4>
+                                                <h4>{{ $item->product->name }}</h4>
                                             </div>
                                         </td>
                                         <td>
                                             <span
-                                                class="shopping-cart__product-price">{{ App\Helpers\Currency::format($item->price) }}</span>
+                                                class="shopping-cart__product-price">{{ Currency::format($item->product->price) }}</span>
                                         </td>
-                                        <td>{{ $item->qty }}</td>
+                                        <td>1</td>
                                         <td>
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <form action="{{ route('wishlist.move.to.cart', $item->rowId) }}"
-                                                        method="post">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-sm btn-warning">Move To
-                                                            Cart</button>
-                                                    </form>
+                                                    @if ($item->product->stock_status == \App\Enums\ProductStockStatus::OUTOFSTOCK)
+                                                        <a href="javascript:void(0)" class="btn btn-sm btn-warning">Sold
+                                                            Out</a>
+                                                    @else
+                                                        <form
+                                                            action="{{ route('wishlist.move.to.cart', $item->product) }}"
+                                                            method="post">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-sm btn-warning">Move
+                                                                To Cart
+                                                            </button>
+                                                        </form>
+                                                    @endif
                                                 </div>
                                                 <div class="col-6">
-                                                    <form action="{{ route('wishlist.item.remove', $item->rowId) }}"
-                                                        method="post" id="wishlist-item-remove">
+                                                    <form action="{{ route('wishlist.item.remove', $item->product) }}"
+                                                        method="post" id="wishlist-item-remove-{{ $item->id }}">
                                                         @csrf
                                                         @method('delete')
                                                         <a href="javascript:void(0)" class="remove-cart"
-                                                            onclick="document.getElementById('wishlist-item-remove').submit();">
+                                                            onclick="document.getElementById('wishlist-item-remove-{{ $item->id }}').submit();">
                                                             <svg width="10" height="10" viewBox="0 0 10 10"
                                                                 fill="#767676" xmlns="http://www.w3.org/2000/svg">
                                                                 <path

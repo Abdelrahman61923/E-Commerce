@@ -4,6 +4,7 @@ use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\CheckoutController;
 use App\Http\Controllers\Front\MyAccountController;
 use App\Http\Controllers\Front\ShopController;
+use App\Http\Controllers\Front\WishController;
 use App\Http\Controllers\Front\WishlistController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\HomeController;
@@ -39,10 +40,10 @@ Route::controller(CartController::class)
 Route::controller(WishlistController::class)
     ->prefix('wishlist')->name('wishlist.')->group(function () {
         Route::get('/','index')->name('index');
-        Route::post('/add','add_to_wishlist')->name('add');
-        Route::delete('/remove/{rowId}','remove_item')->name('item.remove');
+        Route::post('/add/{product}','add_to_wishlist')->name('add');
+        Route::delete('/remove/{product}','remove_item')->name('item.remove');
         Route::delete('/clear','empty_wishlist')->name('empty');
-        Route::post('/move-to-cart/{rowId}','move_to_cart')->name('move.to.cart');
+        Route::post('/move-to-cart/{product}','move_to_cart')->name('move.to.cart');
 });
 
 Route::controller(CheckoutController::class)

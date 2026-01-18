@@ -386,7 +386,11 @@
                                                 <use href="#icon_next_sm" />
                                             </svg></span>
                                     </div>
-                                    @if (Cart::instance('cart')->content()->where('id', $product->id)->count() > 0)
+                                    @if ($product->stock_status == \App\Enums\ProductStockStatus::OUTOFSTOCK)
+                                        <a href="javascript:void(0)"
+                                            class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium btn-warning mb-3">Sold
+                                            Out</a>
+                                    @elseif (Cart::instance('cart')->content()->where('id', $product->id)->count() > 0)
                                         <a href="{{ route('cart.index') }}"
                                             class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium btn-warning mb-3">Go
                                             to cart</a>
@@ -416,8 +420,7 @@
                                             <span
                                                 class="money price price-sale">{{ Currency::format($product->sale_price) }}</span>
                                         @else
-                                            <span
-                                                class="money price">{{ Currency::format($product->price) }}</span>
+                                            <span class="money price">{{ Currency::format($product->price) }}</span>
                                         @endif
                                     </div>
                                     <div class="product-card__review d-flex align-items-center">
@@ -448,8 +451,10 @@
                                     </div>
 
 
-                                    @if (Cart::instance('wishlist')->content()->where('id', $product->id)->count())
-                                        <form action="{{ route('wishlist.item.remove', ['rowId' => Surfsidemedia\Shoppingcart\Facades\Cart::instance('wishlist')->content()->where('id', $product->id)->first()->rowId]) }}" method="post">
+                                    @if (\App\Models\Wishlist::where('product_id', $product->id)->count())
+                                        <form
+                                            action="{{ route('wishlist.item.remove', $product) }}"
+                                            method="post">
                                             @csrf
                                             @method('delete')
                                             <button type="submit"
@@ -462,13 +467,8 @@
                                             </button>
                                         </form>
                                     @else
-                                        <form action="{{ route('wishlist.add') }}" method="post">
+                                        <form action="{{ route('wishlist.add', $product) }}" method="post">
                                             @csrf
-                                            <input type="hidden" name="id" value="{{ $product->id }}">
-                                            <input type="hidden" name="name" value="{{ $product->name }}">
-                                            <input type="hidden" name="price"
-                                                value="{{ $product->sale_price == '' ? $product->price : $product->sale_price }}">
-                                            <input type="hidden" name="quantity" value="1">
                                             <button type="submit"
                                                 class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
                                                 title="Add To Wishlist">
@@ -480,6 +480,14 @@
                                         </form>
                                     @endif
                                 </div>
+                                @if ($product->stock_status == \App\Enums\ProductStockStatus::OUTOFSTOCK)
+                                    <div
+                                        class="pc-labels position-absolute top-0 start-0 w-100 d-flex justify-content-between">
+                                        <div class="pc-labels__left">
+                                            <span class="pc-label pc-label_new d-block bg-white">Sold Out</span>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     @endforeach

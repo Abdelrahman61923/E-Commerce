@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Services\Front\WishlistService;
-use Illuminate\Http\Request;
+use App\Models\Product;
 use App\Http\Controllers\Controller;
-use Surfsidemedia\Shoppingcart\Facades\Cart;
+use App\Services\Front\WishlistService;
 
 class WishlistController extends Controller
 {
@@ -13,19 +12,19 @@ class WishlistController extends Controller
     {}
     public function index()
     {
-        $items = $this->wishlistService->getAll();
+        $items = $this->wishlistService->getWishlist();
         return view('front.cart.wishlist', compact('items'));
     }
 
-    public function add_to_wishlist(Request $request)
+    public function add_to_wishlist(Product $product)
     {
-        $this->wishlistService->add($request);
+        $this->wishlistService->add($product);
         return redirect()->back();
     }
 
-    public function remove_item($rowId)
+    public function remove_item(Product $product)
     {
-        $this->wishlistService->delete($rowId);
+        $this->wishlistService->delete($product);
         return redirect()->back();
     }
 
@@ -35,9 +34,9 @@ class WishlistController extends Controller
         return redirect()->back();
     }
 
-    public function move_to_cart($rowId)
+    public function move_to_cart(Product $product)
     {
-        $this->wishlistService->move($rowId);
+        $this->wishlistService->move($product);
         return redirect()->back();
     }
 }

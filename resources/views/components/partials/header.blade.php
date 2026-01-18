@@ -450,9 +450,9 @@
                         xmlns="http://www.w3.org/2000/svg">
                         <use href="#icon_heart" />
                     </svg>
-                    @if (Cart::instance('wishlist')->content()->count())
+                    @if (\App\Models\Wishlist::count())
                         <span
-                            class="cart-amount d-block position-absolute js-cart-items-count">{{ Cart::instance('wishlist')->content()->count() }}</span>
+                            class="cart-amount d-block position-absolute js-cart-items-count">{{ \App\Models\Wishlist::count() }}</span>
                     @endif
                 </a>
 
@@ -461,9 +461,9 @@
                         xmlns="http://www.w3.org/2000/svg">
                         <use href="#icon_cart" />
                     </svg>
-                    @if (Surfsidemedia\Shoppingcart\Facades\Cart::instance('cart')->content()->count() > 0)
+                    @if (Cart::instance('cart')->content()->count() > 0)
                         <span
-                            class="cart-amount d-block position-absolute js-cart-items-count">{{ Surfsidemedia\Shoppingcart\Facades\Cart::instance('cart')->content()->count() }}</span>
+                            class="cart-amount d-block position-absolute js-cart-items-count">{{ Cart::instance('cart')->content()->count() }}</span>
                     @endif
                 </a>
             </div>

@@ -149,12 +149,12 @@
                                             </tr>
                                             <tr>
                                                 <th>Discount {{ Session::get('coupon')['code'] }}</th>
-                                                <td>{{ App\Helpers\Currency::format(Session::get('discounts')['discount']) }}
+                                                <td>{{ Currency::format(Session::get('discounts')['discount']) }}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>Subtotal After Discount</th>
-                                                <td>{{ App\Helpers\Currency::format(Session::get('discounts')['subtotal']) }}
+                                                <td>{{ Currency::format(Session::get('discounts')['subtotal']) }}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -163,12 +163,12 @@
                                             </tr>
                                             <tr>
                                                 <th>VAT</th>
-                                                <td>{{ App\Helpers\Currency::format(Session::get('discounts')['tax']) }}
+                                                <td>{{ Currency::format(Session::get('discounts')['tax']) }}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>Total</th>
-                                                <td>{{ App\Helpers\Currency::format(Session::get('discounts')['total']) }}
+                                                <td>{{ Currency::format(Session::get('discounts')['total']) }}
                                                 </td>
                                             </tr>
                                         </tbody>

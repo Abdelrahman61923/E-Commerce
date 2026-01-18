@@ -2,14 +2,13 @@
 
 namespace App\Notifications;
 
-use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class ProductStockStatusNotification extends Notification
+class ProductLowStockNotification extends Notification
 {
     use Queueable;
 
@@ -42,12 +41,16 @@ class ProductStockStatusNotification extends Notification
                     ->line('Thank you for using our application!');
     }
     /**
-     * Get the Database representation of the notification.
+     * Get the mail representation of the notification.
      */
     public function toDatabase(object $notifiable)
     {
+        $stockMessage = $this->product->isOutOfStock()
+            ? "is out of stock."
+            : "is running low on stock ({$this->product->quantity} left).";
+
         return [
-            'body' => "Product ({$this->product->name}) is out of stock.",
+            'body' => "Product ({$this->product->name}) {$stockMessage}",
             'title' => 'product status: ',
             'icon' => 'icon-noti-3',
             'box_color' => 'message-item item-3',
