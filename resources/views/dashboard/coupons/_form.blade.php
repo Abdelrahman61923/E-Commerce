@@ -13,8 +13,8 @@
     <x-form.input label="Coupon Code " name="code" placeholder="Coupon Code" :value="$coupon->code" />
 </fieldset>
 <fieldset class="name">
-    <x-form.select label="Coupon Type" option1="Select" name="type" :options="['fixed' => 'Fixed', 'percent' => 'Percent']"
-        :selected="$coupon->type ?? ''" />
+    <x-form.select label="Coupon Type" option1="Select" name="type" :options="\App\Enums\CouponType::options()"
+        :selected="$coupon->type->value ?? ''" />
 </fieldset>
 <fieldset class="name">
     <x-form.input label="Value " name="value" placeholder="Coupon Value" :value="$coupon->value" />

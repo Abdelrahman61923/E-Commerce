@@ -3,14 +3,22 @@
 namespace App\Services\Dashboard;
 
 use App\Models\Category;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
 
-class CategoryService
+class CategoryService extends AbstractService
 {
-    public function getAll($perPage = 10)
+    protected array $withCount = ['products'];
+    protected array $with = ['parent'];
+
+    public function __construct(protected MediaService $mediaService)
     {
-        return Category::with('parent')->withCount('products')
-            ->latest()->paginate($perPage);
+        parent::__construct();
+    }
+
+    protected function model(): Model
+    {
+        return new Category();
     }
 
     public function getAllParent()
@@ -28,26 +36,23 @@ class CategoryService
             ->get();
     }
 
-    public function add(array $data)
+    public function addCategory(array $data): Category
     {
-        $category = Category::create($data);
-        if (!empty($data['image'])) {
-            $category->addMedia($data['image'])->toMediaCollection('image');
-        }
-        return $category;
+        return DB::transaction(function () use ($data) {
+            $category = $this->add($data);
+
+            $this->mediaService->uploadSingle($category, $data['image'] ?? null, 'image');
+            return $category;
+        });
     }
 
-    public function update(Category $category, array $data)
+    public function updateCategory(Category $category, array $data): Category
     {
-        $category->update($data);
-        if (!empty($data['image'])) {
-            $category->addMedia($data['image'])->toMediaCollection('image');
-        }
-        return $category;
-    }
+        return DB::transaction(function () use ($category, $data) {
+            $this->update($category, $data);
 
-    public function delete(Category $category)
-    {
-        return $category->delete();
+            $this->mediaService->uploadSingle($category, $data['image'] ?? null, 'image');
+            return $category;
+        });
     }
 }

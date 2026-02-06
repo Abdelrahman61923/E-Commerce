@@ -3,34 +3,38 @@
 namespace App\Services\Dashboard;
 
 use App\Models\Slide;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
 
-class SlideService
+class SlideService extends AbstractService
 {
-    public function getAll($perPage = 10)
+    public function __construct(protected MediaService $mediaService)
     {
-        return Slide::latest()->paginate($perPage);
+        parent::__construct();
     }
 
-    public function add(array $data)
+    protected function model(): Model
     {
-        $slide = Slide::create($data);
-        if (!empty($data['image'])) {
-            $slide->addMedia($data['image'])->toMediaCollection('image');
-        }
-        return $slide;
+        return new Slide();
     }
 
-    public function update(Slide $slide, array $data)
+    public function addSlide(array $data): Slide
     {
-        $slide->update($data);
-        if (!empty($data['image'])) {
-            $slide->addMedia($data['image'])->toMediaCollection('image');
-        }
-        return $slide;
+        return DB::transaction(function () use ($data) {
+            $slide = $this->add($data);
+
+            $this->mediaService->uploadSingle($slide, $data['image'] ?? null, 'image');
+            return $slide;
+        });
     }
 
-    public function delete(Slide $slide)
+    public function updateSlide(Slide $slide, array $data): Slide
     {
-        return $slide->delete();
+        return DB::transaction(function () use ($slide, $data) {
+            $this->update($slide, $data);
+
+            $this->mediaService->uploadSingle($slide, $data['image'] ?? null, 'image');
+            return $slide;
+        });
     }
 }

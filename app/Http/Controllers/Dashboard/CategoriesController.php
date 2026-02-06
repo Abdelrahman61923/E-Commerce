@@ -35,7 +35,7 @@ class CategoriesController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        $this->categoryService->add($request->validated());
+        $this->categoryService->addCategory($request->validated());
         return redirect()->route("admin.categories.index")->with(
             "success","Category Created Successfully"
         );
@@ -65,7 +65,7 @@ class CategoriesController extends Controller
      */
     public function update(CategoryRequest $request, Category $category)
     {
-        $this->categoryService->update($category,$request->validated());
+        $this->categoryService->updateCategory($category,$request->validated());
         return redirect()->route("admin.categories.index")->with(
             "success","Category Updated Successfully"
         );

@@ -3,15 +3,23 @@
 namespace App\Services\Dashboard;
 
 use App\Models\Brand;
-use App\Models\Category;
 use App\Models\Product;
-use Illuminate\Http\UploadedFile;
+use App\Models\Category;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
 
-class ProductService
+class ProductService extends AbstractService
 {
-    public function getAll($perPage = 10)
+    protected array $with = ['category', 'brand'];
+
+    public function __construct(protected MediaService $mediaService)
     {
-        return Product::with('category', 'brand')->latest()->paginate($perPage);
+        parent::__construct();
+    }
+
+    protected function model(): Model
+    {
+        return new Product();
     }
 
     public function getAllCategories()
@@ -23,42 +31,33 @@ class ProductService
         return Brand::all();
     }
 
-    public function add(array $data)
-    {
-        $product = Product::create($data);
+    public function addProduct(array $data): Product
+{
+    return DB::transaction(function () use ($data) {
+        $product = $this->add($data);
+
+        $this->mediaService->uploadSingle($product, $data['image'] ?? null, 'main_image');
+        $this->mediaService->uploadMultiple($product, $data['images'] ?? [], 'gallery');
+        return $product;
+    });
+}
+
+
+public function updateProduct(Product $product, array $data): Product
+{
+    return DB::transaction(function () use ($product, $data) {
+        $this->update($product, $data);
 
         if (!empty($data['image'])) {
-            $product->addMedia($data['image'])->toMediaCollection('main_image');
+            $this->mediaService->uploadSingle($product, $data['image'], 'main_image');
         }
 
-        if (!empty($data['images']) && is_array($data['images'])) {
-            foreach ($data['images'] as $image) {
-                $product->addMedia($image)->toMediaCollection('gallery');
-            }
+        if (!empty($data['images'])) {
+            $this->mediaService->uploadMultiple($product, $data['images'], 'gallery', true);
         }
 
         return $product;
-    }
+    });
+}
 
-    public function update(Product $product, array $data)
-    {
-        $product->update($data);
-
-        if (!empty($data['image'])) {
-            $product->addMedia($data['image'])->toMediaCollection('main_image');
-        }
-
-        if (!empty($data['images']) && is_array($data['images'])) {
-            $product->clearMediaCollection('gallery');
-            foreach ($data['images'] as $image) {
-                $product->addMedia($image)->toMediaCollection('gallery');
-            }
-        }
-        return $product;
-    }
-
-    public function delete(Product $product)
-    {
-        return $product->delete();
-    }
 }

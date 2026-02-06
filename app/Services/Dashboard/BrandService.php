@@ -3,35 +3,41 @@
 namespace App\Services\Dashboard;
 
 use App\Models\Brand;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use App\Services\Dashboard\MediaService;
 
-class BrandService
+class BrandService extends AbstractService
 {
-    public function getAll($perPage = 10)
+    protected array $withCount = ['products'];
+
+    public function __construct(protected MediaService $mediaService)
     {
-        return Brand::withCount('products')->latest()->paginate($perPage);
+        parent::__construct();
     }
 
-    public function add(array $data)
+    protected function model(): Model
     {
-        $brand = Brand::create($data);
-        if (!empty($data['image'])) {
-            $brand->addMedia($data['image'])->toMediaCollection('logo');
-        }
-        return $brand;
+        return new Brand();
     }
 
-    public function update(Brand $brand, array $data)
+    public function addBrand(array $data): Brand
     {
-        $brand->update($data);
-        if (!empty($data['image'])) {
-            $brand->addMedia($data['image'])->toMediaCollection('logo');
-        }
-        return $brand;
+        return DB::transaction(function () use ($data) {
+            $brand = $this->add($data);
+
+            $this->mediaService->uploadSingle($brand, $data['image'] ?? null, 'logo');
+            return $brand;
+        });
     }
 
-    public function delete(Brand $brand)
+    public function updateBrand(Brand $brand, array $data): Brand
     {
-        return $brand->delete();
+        return DB::transaction(function () use ($brand, $data) {
+            $this->update($brand, $data);
+
+            $this->mediaService->uploadSingle($brand, $data['image'] ?? null, 'logo');
+            return $brand;
+        });
     }
 }

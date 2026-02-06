@@ -35,7 +35,7 @@ class SlideController extends Controller
      */
     public function store(SlideRequest $request)
     {
-        $this->slideService->add($request->validated());
+        $this->slideService->addSlide($request->validated());
         return redirect()->route('admin.slides.index')->with(
             'success', 'Slide Created Successfully'
         );
@@ -62,7 +62,7 @@ class SlideController extends Controller
      */
     public function update(SlideRequest $request, Slide $slide)
     {
-        $this->slideService->update($slide, $request->validated());
+        $this->slideService->updateSlide($slide, $request->validated());
         return redirect()->route('admin.slides.index')->with(
             'success', 'Slide Updated Successfully'
         );

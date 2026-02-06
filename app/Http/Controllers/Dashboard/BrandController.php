@@ -34,7 +34,7 @@ class BrandController extends Controller
      */
     public function store(BrandRequest $request)
     {
-        $this->brandService->add($request->validated());
+        $this->brandService->addBrand($request->validated());
 
         return redirect()->route('admin.brands.index')->with(
             'success', 'Brand Created Successfully'
@@ -62,7 +62,7 @@ class BrandController extends Controller
      */
     public function update(BrandRequest $request, Brand $brand)
     {
-        $this->brandService->update($brand, $request->validated());
+        $this->brandService->updateBrand($brand, $request->validated());
 
         return redirect()->route('admin.brands.index')->with(
             'success', 'Brand Update Successfully'

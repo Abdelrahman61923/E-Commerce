@@ -39,7 +39,7 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $this->productService->add($request->validated());
+        $this->productService->addProduct($request->validated());
         return redirect()->route("admin.products.index")->with(
             "success","Product Created Successfully"
         );
@@ -69,7 +69,7 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
-        $this->productService->update($product, $request->validated());
+        $this->productService->updateProduct($product, $request->validated());
         return redirect()->route("admin.products.index")->with(
             "success","Product Updated Successfully"
         );
